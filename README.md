@@ -1,11 +1,12 @@
 # Bildschirm-Test
 
-Testseite für einen Digital-Signage-Bildschirm. Sie zeigt Browser-Version, Fenstergröße, Uhrzeit, Zeitzone, Video-Wiedergabe und ob der Server erreichbar ist.
+Seiten für einen Digital-Signage-Bildschirm im Hochformat (1080 × 1920).
 
-**Das Video ist mit KI erzeugt.**
+- `index.html`: Testseite. Sie zeigt Browser-Version, Fenstergröße, Uhrzeit, Zeitzone, Video-Wiedergabe und ob der Server erreichbar ist.
+- `bildschirm-1.html`: Speisekarte Kaffee mit Video. Preise mit orangem Punkt sind noch nicht bestätigt.
 
-Adresse: https://aibrandexpert.github.io/tbtest/
+**Die Videos sind mit KI erzeugt.**
 
 Bleibt das Bild quer, `?drehen=links` oder `?drehen=rechts` an die Adresse hängen.
 
-Die Schriften sind hier absichtlich weggelassen.
+Schriften: Barlow und Big Shoulders Display, SIL Open Font License 1.1. Lizenztexte in `schrift/`.

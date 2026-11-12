@@ -1,0 +1,143 @@
+<!doctype html><html lang="de"><head><meta charset="utf-8"><title>Bildschirm 1</title>
+<link rel="stylesheet" href="schrift.css"><style>
+:root{--grill:#1E1E1D;--brioche:#EAC890;--pruefen:#FF5A1F;--s:1}
+body.dunkel{--bg:var(--grill);--ink:var(--brioche);--muted:rgba(234,200,144,.70);--herb:#8CC497}
+body.hell{--bg:var(--brioche);--ink:var(--grill);--muted:rgba(30,30,29,.72);--herb:#245C31}
+html,body{margin:0;padding:0;width:1080px;height:1920px;overflow:hidden;background:var(--bg);color:var(--ink)}
+*{box-sizing:border-box}
+.screen{width:1080px;height:1920px;display:flex;flex-direction:column;overflow:hidden}
+.video{position:relative;height:680px;flex:0 0 auto;background:#141413;overflow:hidden}
+.platzhalter{position:absolute;top:0;right:0;bottom:0;left:0;display:flex;flex-direction:column;align-items:center;justify-content:center;
+  padding-bottom:150px;background:repeating-linear-gradient(135deg,rgba(234,200,144,.07) 0 18px,transparent 18px 36px)}
+.platzhalter>*+*{margin-top:22px}
+.play{width:0;height:0;margin-left:12px;border-left:64px solid rgba(234,200,144,.6);
+  border-top:38px solid transparent;border-bottom:38px solid transparent}
+.platzhalter .label{font:600 30px/1.3 'Barlow',sans-serif;color:rgba(234,200,144,.68);text-align:center}
+.video::after{content:"";position:absolute;top:0;right:0;bottom:0;left:0;pointer-events:none;
+  background:linear-gradient(to bottom,rgba(20,20,19,.6) 0,rgba(20,20,19,0) 24%,rgba(20,20,19,0) 48%,rgba(20,20,19,.9) 100%)}
+.video-oben{position:absolute;z-index:2;top:52px;left:60px;right:60px;display:flex;align-items:center;justify-content:space-between}
+.video-oben img{height:76px;width:auto;display:block}
+[hidden]{display:none!important}
+html.render,html.render body,html.render .screen,html.render .video{background:transparent!important}
+html.render video{visibility:hidden}
+html.render .inhalt,html.render .kopf{background:var(--bg)}
+html.render .titel.frei{margin:0;padding:24px 60px 0;background:var(--bg)}
+.video-oben .rechts{display:flex;flex-direction:column;align-items:flex-end}
+.video-oben .rechts>*+*{margin-top:14px}
+.still{position:absolute;top:0;right:0;bottom:0;left:0;width:100%;height:100%;object-fit:cover;object-position:center}
+.ki{font:600 20px/1 'Barlow',sans-serif;color:rgba(234,200,144,.9);background:rgba(20,20,19,.6);
+  padding:7px 12px 8px;border-radius:999px}
+.play-knopf{position:absolute;z-index:2;left:50%;top:38%;transform:translate(-50%,-50%);width:150px;height:150px;
+  border-radius:50%;background:rgba(20,20,19,.5);box-shadow:inset 0 0 0 4px rgba(234,200,144,.9)}
+.play-knopf::after{content:"";position:absolute;left:60px;top:45px;border-left:50px solid rgba(234,200,144,.95);
+  border-top:30px solid transparent;border-bottom:30px solid transparent}
+.video.unten .play-knopf{top:54%}
+.video.unten::after{background:linear-gradient(to bottom,var(--bg) 0,rgba(0,0,0,0) 16%)}
+.video.unten .ki{position:absolute;z-index:2;right:60px;bottom:30px}
+.kicker{font:600 34px/1 'Barlow',sans-serif;margin:0}
+.video-oben .kicker{color:var(--brioche)}
+.titel{margin:0;white-space:nowrap;font-family:'Big Shoulders Display',sans-serif;font-weight:900;font-size:208px;
+  line-height:.86;letter-spacing:-.01em}
+.video .titel{position:absolute;z-index:2;left:60px;right:60px;bottom:46px;color:var(--brioche)}
+.kopf{display:flex;align-items:center;justify-content:space-between;padding:52px 60px 0;flex:0 0 auto}
+.kopf img{height:76px;width:auto;display:block}
+.titel.frei{margin:24px 60px 0;color:var(--ink);flex:0 0 auto}
+.inhalt{flex:1 1 auto;min-height:0;overflow:hidden;display:flex;flex-direction:column;padding:46px 60px 48px}
+.gruppen{display:flex;flex-direction:column}
+.gruppen:not(.zwei)>*+*{margin-top:calc(34px*var(--s))}
+.gruppen.zwei{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);column-gap:44px;align-items:start;--name:44px;--text:22px}
+.spalte{display:flex;flex-direction:column}
+.spalte>*+*{margin-top:calc(34px*var(--s))}
+.gkopf{display:flex;align-items:flex-end;justify-content:space-between;margin-bottom:calc(14px*var(--s))}
+.gtitel{font-family:'Big Shoulders Display',sans-serif;font-weight:800;font-size:calc(42px*var(--s));line-height:1;margin:0;
+  background:var(--ink);color:var(--bg);padding:calc(7px*var(--s)) calc(18px*var(--s)) calc(9px*var(--s));border-radius:14px 14px 14px 4px}
+.spalten{display:flex;font:600 calc(24px*var(--s))/1 'Barlow',sans-serif;color:var(--muted)}
+.spalten span,.preis{width:calc(140px*var(--s));text-align:right}
+.eintraege{display:flex;flex-direction:column}
+.eintraege>*+*{margin-top:calc(18px*var(--s))}
+.raster2{--name:48px}
+.raster2 .eintraege{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);column-gap:44px;row-gap:calc(16px*var(--s))}
+.raster2 .eintraege>*+*{margin-top:0}
+.raster2 .preis{width:auto}
+.raster2 .preis.breit{min-width:0}
+.zeile{display:flex;align-items:baseline;justify-content:space-between}
+.zeile>*+*{margin-left:16px}
+.name,.preise{font-family:'Big Shoulders Display',sans-serif;font-weight:800;font-size:calc(var(--name,54px)*var(--s));line-height:1.02}
+.preise{display:flex;flex:0 0 auto}
+.preis{white-space:nowrap}
+.zwei .preis{width:auto}
+.preis.breit{width:auto;min-width:calc(140px*var(--s))}
+.preis.pruefen::before{content:"";display:inline-block;width:calc(14px*var(--s));height:calc(14px*var(--s));
+  border-radius:50%;background:var(--pruefen);margin-right:calc(8px*var(--s));vertical-align:.12em}
+.z{white-space:nowrap}
+.text{font:500 calc(var(--text,26px)*var(--s))/1.28 'Barlow',sans-serif;color:var(--muted);margin-top:calc(6px*var(--s))}
+.tag{display:inline-block;vertical-align:.08em;margin-right:10px;font:700 calc(19px*var(--s))/1 'Barlow',sans-serif;
+  padding:calc(5px*var(--s)) calc(10px*var(--s)) calc(6px*var(--s));border-radius:999px}
+.tag.vegan,.tag.veggie{background:var(--herb);color:var(--bg)}
+.tag.neu{box-shadow:inset 0 0 0 2px var(--ink);color:var(--ink)}
+.hinweis{font:500 calc(24px*var(--s))/1.3 'Barlow',sans-serif;color:var(--muted);margin-top:calc(16px*var(--s))}
+.fuss{margin-top:auto;padding-top:calc(26px*var(--s));display:flex;flex-direction:column;
+  font:500 calc(21px*var(--s))/1.32 'Barlow',sans-serif;color:var(--muted)}
+.fuss>*+*{margin-top:6px}
+.fuss .reihe{display:flex;justify-content:space-between}
+.fuss .reihe>*+*{margin-left:24px}
+.punkt{display:inline-block;width:13px;height:13px;border-radius:50%;background:var(--pruefen);margin-right:10px}
+</style><script src="konfig.js"></script></head>
+<body class="dunkel"><main class="screen">
+<div class="video"><video src="video/kaffee.mp4" class="still" autoplay muted loop playsinline preload="auto"></video><div class="video-oben"><img src="logo/tb_brioche.png" alt="Two Bro's"><div class="rechts"></div></div><h1 class="titel">Kaffee</h1></div>
+<div class="inhalt"><div class="gruppen"><section class="gruppe"><div class="gkopf"><h2 class="gtitel">Heiß</h2><span class="spalten"><span>klein</span><span>groß</span></span></div><div class="eintraege"><div class="eintrag"><div class="zeile"><span class="name"><span class="z">Espresso</span></span><span class="preise"><span class="preis pruefen">2,50</span><span class="preis pruefen">3,50</span></span></div></div><div class="eintrag"><div class="zeile"><span class="name"><span class="z">Americano</span></span><span class="preise"><span class="preis pruefen">3,00</span><span class="preis pruefen">3,50</span></span></div></div><div class="eintrag"><div class="zeile"><span class="name"><span class="z">Milchkaffee</span>, <span class="z">Cappuccino</span>, <span class="z">Latte Macchiato</span></span><span class="preise"><span class="preis pruefen">3,50</span><span class="preis pruefen">4,00</span></span></div></div><div class="eintrag"><div class="zeile"><span class="name"><span class="z">Chai Latte</span>, <span class="z">Matcha Latte</span>, <span class="z">Dark Chocolate</span>, <span class="z">White Chocolate</span></span><span class="preise"><span class="preis pruefen">4,00</span><span class="preis pruefen">4,50</span></span></div></div><div class="eintrag"><div class="zeile"><span class="name"><span class="z">Tee</span></span><span class="preise"><span class="preis"></span><span class="preis pruefen">4,00</span></span></div><div class="text"><span class="z">Verschiedene Sorten</span></div></div></div></section><section class="gruppe"><div class="gkopf"><h2 class="gtitel">Eiskalt</h2><span class="spalten"><span>0,33 l</span><span>0,5 l</span></span></div><div class="eintraege"><div class="eintrag"><div class="zeile"><span class="name"><span class="z">Iced Latte</span></span><span class="preise"><span class="preis">5,50</span><span class="preis">6,50</span></span></div></div><div class="eintrag"><div class="zeile"><span class="name"><span class="z">Iced Matcha Latte</span></span><span class="preise"><span class="preis">5,50</span><span class="preis">6,50</span></span></div></div><div class="eintrag"><div class="zeile"><span class="name"><span class="z">Cold Brew</span></span><span class="preise"><span class="preis">4,80</span><span class="preis">5,90</span></span></div></div><div class="eintrag"><div class="zeile"><span class="name"><span class="z">Cold Brew Latte</span></span><span class="preise"><span class="preis">5,50</span><span class="preis">6,50</span></span></div></div></div></section><section class="gruppe raster2"><div class="gkopf"><h2 class="gtitel">Extras</h2></div><div class="eintraege"><div class="eintrag"><div class="zeile"><span class="name"><span class="z">Espresso-Shot</span></span><span class="preise"><span class="preis breit pruefen">+1,00</span></span></div></div><div class="eintrag"><div class="zeile"><span class="name"><span class="z">Flavor-Shot</span></span><span class="preise"><span class="preis breit pruefen">+1,00</span></span></div></div><div class="eintrag"><div class="zeile"><span class="name"><span class="z">Hafermilch</span></span><span class="preise"><span class="preis breit pruefen">+0,50</span></span></div></div><div class="eintrag"><div class="zeile"><span class="name"><span class="z">Entkoffeiniert</span></span><span class="preise"><span class="preis breit pruefen">+1,00</span></span></div></div></div><div class="hinweis">Alle Milchgetränke gibt es auch laktosefrei.</div></section></div><footer class="fuss"><div><span class="punkt"></span>Preis aus der alten Karte vom Dezember 2025 – bitte prüfen</div><div class="reihe"><span>Alle Preise in Euro</span></div></footer></div>
+
+</main><script>
+const K = window.KONFIG || {}, q = new URLSearchParams(location.search);
+if (q.get('render')) document.documentElement.classList.add('render');
+const seiten = [...document.querySelectorAll('.screen')];
+function passe(m) {
+  m.hidden = false;
+  const z = m.querySelector('.inhalt');
+  let s = 1;
+  while (z.scrollHeight > z.clientHeight + 1 && s > 0.6) { s -= 0.01; m.style.setProperty('--s', s); }
+  m.dataset.scale = s.toFixed(2);
+}
+function zeige() {
+  const d = new Date(), jetzt = String(d.getHours()).padStart(2, '0') + ':' + String(d.getMinutes()).padStart(2, '0');
+  const zeit = q.get('zeit') || (jetzt < (K.fruehstueck_bis || '12:00') ? 'morgens' : 'mittag');
+  for (const m of seiten) {
+    const an = !m.dataset.zeit || m.dataset.zeit === zeit, v = m.querySelector('video');
+    m.hidden = !an;
+    if (v) { if (an) v.play().catch(() => {}); else v.pause(); }
+  }
+}
+document.fonts.ready.then(() => {
+  seiten.forEach(passe);
+  zeige();
+  setInterval(zeige, 30000);
+});
+// Liegt eine neue Fassung auf dem Server, lädt sich die Seite selbst neu.
+let stand = null;
+async function pruefe() {
+  try {
+    const t = await (await fetch('stand.txt?' + Date.now())).text();
+    if (stand && t !== stand) location.reload();
+    stand = t;
+  } catch (e) {}
+}
+pruefe();
+setInterval(pruefe, 300000);
+
+(function () {
+  var drehen = new URLSearchParams(location.search).get('drehen');
+  function einpassen() {
+    var st = document.body.style, w = window.innerWidth, h = window.innerHeight;
+    var quer = drehen === 'links' || drehen === 'rechts';
+    if (!quer && w === 1080 && h === 1920) { st.transform = ''; return; }
+    var s = quer ? Math.min(w / 1920, h / 1080) : Math.min(w / 1080, h / 1920), x, y, dreh = '';
+    if (!quer) { x = (w - 1080 * s) / 2; y = (h - 1920 * s) / 2; }
+    else if (drehen === 'links') { x = (w - 1920 * s) / 2; y = (h + 1080 * s) / 2; dreh = ' rotate(-90deg)'; }
+    else { x = (w + 1920 * s) / 2; y = (h - 1080 * s) / 2; dreh = ' rotate(90deg)'; }
+    st.transformOrigin = '0 0';
+    st.transform = 'translate(' + x + 'px,' + y + 'px) scale(' + s + ')' + dreh;
+  }
+  einpassen();
+  window.addEventListener('resize', einpassen);
+})();
+</script></body></html>
