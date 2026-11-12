@@ -3,7 +3,7 @@
 Seiten für einen Digital-Signage-Bildschirm im Hochformat (1080 × 1920).
 
 - `index.html`: Testseite. Sie zeigt Browser-Version, Fenstergröße, Uhrzeit, Zeitzone, Video-Wiedergabe und ob der Server erreichbar ist.
-- `bildschirm-1.html`: Speisekarte Kaffee mit Video. Preise mit orangem Punkt sind noch nicht bestätigt.
+- `bildschirm-1.html`: Speisekarte Kaffee mit Video. Preise laut Board im Laden vom 12.11.2026.
 
 **Die Videos sind mit KI erzeugt.**
 
