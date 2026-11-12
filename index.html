@@ -1,4 +1,4 @@
-<!doctype html><html lang="de"><head><meta charset="utf-8"><title>Test Bildschirm</title>
+<!doctype html><html lang="de"><head><meta charset="utf-8"><meta name="viewport" content="width=1080"><title>Test Bildschirm</title>
 <link rel="stylesheet" href="schrift.css"><script src="konfig.js"></script>
 <style>
 html,body{margin:0;padding:0;width:1080px;height:1920px;overflow:hidden}
@@ -122,9 +122,10 @@ Zeigt der Pfeil nicht nach oben: an die Adresse <b>?drehen=links</b> oder <b>?dr
 </script>
 <script>
 (function () {
-  var drehen = new URLSearchParams(location.search).get('drehen');
+  var treffer = /[?&]drehen=([^&]*)/.exec(location.search), drehen = treffer ? decodeURIComponent(treffer[1]) : null;
   function einpassen() {
     var st = document.body.style, w = window.innerWidth, h = window.innerHeight;
+    if (!w || !h) return;
     var quer = drehen === 'links' || drehen === 'rechts';
     if (!quer && w === 1080 && h === 1920) { st.transform = ''; return; }
     var s = quer ? Math.min(w / 1920, h / 1080) : Math.min(w / 1080, h / 1920), x, y, dreh = '';
@@ -136,6 +137,9 @@ Zeigt der Pfeil nicht nach oben: an die Adresse <b>?drehen=links</b> oder <b>?dr
   }
   einpassen();
   window.addEventListener('resize', einpassen);
+  window.addEventListener('load', einpassen);
+  // Manche Web-Bausteine melden ihre Größe erst später und ohne resize-Ereignis.
+  setInterval(einpassen, 2000);
 })();
 </script>
 </body></html>

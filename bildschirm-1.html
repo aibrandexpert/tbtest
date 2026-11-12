@@ -1,4 +1,4 @@
-<!doctype html><html lang="de"><head><meta charset="utf-8"><title>Bildschirm 1</title>
+<!doctype html><html lang="de"><head><meta charset="utf-8"><meta name="viewport" content="width=1080"><title>Bildschirm 1</title>
 <link rel="stylesheet" href="schrift.css"><style>
 :root{--grill:#1E1E1D;--brioche:#EAC890;--pruefen:#FF5A1F;--s:1}
 body.dunkel{--bg:var(--grill);--ink:var(--brioche);--muted:rgba(234,200,144,.70);--herb:#8CC497}
@@ -88,46 +88,11 @@ html.render .titel.frei{margin:0;padding:24px 60px 0;background:var(--bg)}
 <div class="inhalt"><div class="gruppen"><section class="gruppe"><div class="gkopf"><h2 class="gtitel">Heiß</h2><span class="spalten"><span>klein</span><span>groß</span></span></div><div class="eintraege"><div class="eintrag"><div class="zeile"><span class="name"><span class="z">Espresso</span></span><span class="preise"><span class="preis pruefen">2,50</span><span class="preis pruefen">3,50</span></span></div></div><div class="eintrag"><div class="zeile"><span class="name"><span class="z">Americano</span></span><span class="preise"><span class="preis pruefen">3,00</span><span class="preis pruefen">3,50</span></span></div></div><div class="eintrag"><div class="zeile"><span class="name"><span class="z">Milchkaffee</span>, <span class="z">Cappuccino</span>, <span class="z">Latte Macchiato</span></span><span class="preise"><span class="preis pruefen">3,50</span><span class="preis pruefen">4,00</span></span></div></div><div class="eintrag"><div class="zeile"><span class="name"><span class="z">Chai Latte</span>, <span class="z">Matcha Latte</span>, <span class="z">Dark Chocolate</span>, <span class="z">White Chocolate</span></span><span class="preise"><span class="preis pruefen">4,00</span><span class="preis pruefen">4,50</span></span></div></div><div class="eintrag"><div class="zeile"><span class="name"><span class="z">Tee</span></span><span class="preise"><span class="preis"></span><span class="preis pruefen">4,00</span></span></div><div class="text"><span class="z">Verschiedene Sorten</span></div></div></div></section><section class="gruppe"><div class="gkopf"><h2 class="gtitel">Eiskalt</h2><span class="spalten"><span>0,33 l</span><span>0,5 l</span></span></div><div class="eintraege"><div class="eintrag"><div class="zeile"><span class="name"><span class="z">Iced Latte</span></span><span class="preise"><span class="preis">5,50</span><span class="preis">6,50</span></span></div></div><div class="eintrag"><div class="zeile"><span class="name"><span class="z">Iced Matcha Latte</span></span><span class="preise"><span class="preis">5,50</span><span class="preis">6,50</span></span></div></div><div class="eintrag"><div class="zeile"><span class="name"><span class="z">Cold Brew</span></span><span class="preise"><span class="preis">4,80</span><span class="preis">5,90</span></span></div></div><div class="eintrag"><div class="zeile"><span class="name"><span class="z">Cold Brew Latte</span></span><span class="preise"><span class="preis">5,50</span><span class="preis">6,50</span></span></div></div></div></section><section class="gruppe raster2"><div class="gkopf"><h2 class="gtitel">Extras</h2></div><div class="eintraege"><div class="eintrag"><div class="zeile"><span class="name"><span class="z">Espresso-Shot</span></span><span class="preise"><span class="preis breit pruefen">+1,00</span></span></div></div><div class="eintrag"><div class="zeile"><span class="name"><span class="z">Flavor-Shot</span></span><span class="preise"><span class="preis breit pruefen">+1,00</span></span></div></div><div class="eintrag"><div class="zeile"><span class="name"><span class="z">Hafermilch</span></span><span class="preise"><span class="preis breit pruefen">+0,50</span></span></div></div><div class="eintrag"><div class="zeile"><span class="name"><span class="z">Entkoffeiniert</span></span><span class="preise"><span class="preis breit pruefen">+1,00</span></span></div></div></div><div class="hinweis">Alle Milchgetränke gibt es auch laktosefrei.</div></section></div><footer class="fuss"><div><span class="punkt"></span>Preis aus der alten Karte vom Dezember 2025 – bitte prüfen</div><div class="reihe"><span>Alle Preise in Euro</span></div></footer></div>
 
 </main><script>
-const K = window.KONFIG || {}, q = new URLSearchParams(location.search);
-if (q.get('render')) document.documentElement.classList.add('render');
-const seiten = [...document.querySelectorAll('.screen')];
-function passe(m) {
-  m.hidden = false;
-  const z = m.querySelector('.inhalt');
-  let s = 1;
-  while (z.scrollHeight > z.clientHeight + 1 && s > 0.6) { s -= 0.01; m.style.setProperty('--s', s); }
-  m.dataset.scale = s.toFixed(2);
-}
-function zeige() {
-  const d = new Date(), jetzt = String(d.getHours()).padStart(2, '0') + ':' + String(d.getMinutes()).padStart(2, '0');
-  const zeit = q.get('zeit') || (jetzt < (K.fruehstueck_bis || '12:00') ? 'morgens' : 'mittag');
-  for (const m of seiten) {
-    const an = !m.dataset.zeit || m.dataset.zeit === zeit, v = m.querySelector('video');
-    m.hidden = !an;
-    if (v) { if (an) v.play().catch(() => {}); else v.pause(); }
-  }
-}
-document.fonts.ready.then(() => {
-  seiten.forEach(passe);
-  zeige();
-  setInterval(zeige, 30000);
-});
-// Liegt eine neue Fassung auf dem Server, lädt sich die Seite selbst neu.
-let stand = null;
-async function pruefe() {
-  try {
-    const t = await (await fetch('stand.txt?' + Date.now())).text();
-    if (stand && t !== stand) location.reload();
-    stand = t;
-  } catch (e) {}
-}
-pruefe();
-setInterval(pruefe, 300000);
-
 (function () {
-  var drehen = new URLSearchParams(location.search).get('drehen');
+  var treffer = /[?&]drehen=([^&]*)/.exec(location.search), drehen = treffer ? decodeURIComponent(treffer[1]) : null;
   function einpassen() {
     var st = document.body.style, w = window.innerWidth, h = window.innerHeight;
+    if (!w || !h) return;
     var quer = drehen === 'links' || drehen === 'rechts';
     if (!quer && w === 1080 && h === 1920) { st.transform = ''; return; }
     var s = quer ? Math.min(w / 1920, h / 1080) : Math.min(w / 1080, h / 1920), x, y, dreh = '';
@@ -139,5 +104,64 @@ setInterval(pruefe, 300000);
   }
   einpassen();
   window.addEventListener('resize', einpassen);
+  window.addEventListener('load', einpassen);
+  // Manche Web-Bausteine melden ihre Größe erst später und ohne resize-Ereignis.
+  setInterval(einpassen, 2000);
 })();
+</script><script>
+var K = window.KONFIG || {};
+var q = (function () {
+  var o = {}, teile = location.search.replace(/^\?/, '').split('&');
+  for (var i = 0; i < teile.length; i++) {
+    if (!teile[i]) continue;
+    var p = teile[i].split('=');
+    o[decodeURIComponent(p[0])] = decodeURIComponent((p[1] || '').replace(/\+/g, ' '));
+  }
+  return o;
+})();
+if (q.render) document.documentElement.className += ' render';
+var seiten = Array.prototype.slice.call(document.querySelectorAll('.screen'));
+function zwei(n) { return (n < 10 ? '0' : '') + n; }
+function passe(m) {
+  m.hidden = false;
+  var z = m.querySelector('.inhalt'), s = 1;
+  while (z.scrollHeight > z.clientHeight + 1 && s > 0.6) { s -= 0.01; m.style.setProperty('--s', s); }
+  m.setAttribute('data-scale', s.toFixed(2));
+}
+function zeige() {
+  var d = new Date(), jetzt = zwei(d.getHours()) + ':' + zwei(d.getMinutes());
+  var zeit = q.zeit || (jetzt < (K.fruehstueck_bis || '12:00') ? 'morgens' : 'mittag');
+  for (var i = 0; i < seiten.length; i++) {
+    var m = seiten[i], mz = m.getAttribute('data-zeit'), an = !mz || mz === zeit, v = m.querySelector('video');
+    m.hidden = !an;
+    if (v) {
+      if (an) { var p = v.play(); if (p && p['catch']) p['catch'](function () {}); }
+      else v.pause();
+    }
+  }
+}
+var gestartet = false;
+function start() {
+  if (gestartet) return;
+  gestartet = true;
+  for (var i = 0; i < seiten.length; i++) passe(seiten[i]);
+  zeige();
+  setInterval(zeige, 30000);
+}
+if (document.fonts && document.fonts.ready) document.fonts.ready.then(start);
+else window.addEventListener('load', start);
+// Liegt eine neue Fassung auf dem Server, lädt sich die Seite selbst neu.
+var stand = null;
+function pruefe() {
+  var x = new XMLHttpRequest();
+  x.onreadystatechange = function () {
+    if (x.readyState !== 4 || x.status !== 200) return;
+    var t = x.responseText;
+    if (stand && t !== stand) location.reload();
+    stand = t;
+  };
+  try { x.open('GET', 'stand.txt?' + new Date().getTime(), true); x.send(); } catch (e) {}
+}
+pruefe();
+setInterval(pruefe, 300000);
 </script></body></html>
