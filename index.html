@@ -36,6 +36,7 @@ Zeigt der Pfeil nicht nach oben: an die Adresse <b>?drehen=links</b> oder <b>?dr
 <tr><td>Karte jetzt</td><td id="karte">…</td></tr>
 <tr><td>Video</td><td id="video">…</td></tr>
 <tr><td>Server</td><td id="server">…</td></tr>
+<tr><td>Tabelle</td><td id="tabelle">…</td></tr>
 <tr><td>Geladen um</td><td id="geladen">…</td></tr>
 </table>
 <div class="video"><video src="video/burger.mp4" autoplay muted loop playsinline preload="auto"></video></div>
@@ -117,6 +118,24 @@ Zeigt der Pfeil nicht nach oben: an die Adresse <b>?drehen=links</b> oder <b>?dr
   }
   server();
   setInterval(server, 10000);
+
+  // Erreicht der Bildschirm Hasans Google-Tabelle? (Adresse in konfig.js)
+  function tabelle() {
+    if (!K.tabelle) { setze('tabelle', 'nicht eingerichtet'); return; }
+    var x = new XMLHttpRequest();
+    x.onreadystatechange = function () {
+      if (x.readyState !== 4) return;
+      if (x.status === 200) setze('tabelle', 'erreichbar, ' + (x.responseText.split('\n').length - 1) +
+        ' Zeilen, geprüft ' + uhrzeit(new Date()), true);
+      else setze('tabelle', 'nicht erreichbar (' + x.status + ')', false);
+    };
+    try {
+      x.open('GET', K.tabelle + (K.tabelle.indexOf('?') < 0 ? '?' : '&') + 't=' + new Date().getTime(), true);
+      x.send();
+    } catch (e) { setze('tabelle', 'Fehler: ' + e.message, false); }
+  }
+  tabelle();
+  setInterval(tabelle, 60000);
   setze('geladen', uhrzeit(new Date()) + ' Uhr');
 })();
 </script>
