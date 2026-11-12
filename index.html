@@ -1,0 +1,141 @@
+<!doctype html><html lang="de"><head><meta charset="utf-8"><title>Test Bildschirm</title>
+<link rel="stylesheet" href="schrift.css"><script src="konfig.js"></script>
+<style>
+html,body{margin:0;padding:0;width:1080px;height:1920px;overflow:hidden}
+body{position:relative;background:#1E1E1D;color:#EAC890;font:500 32px/1.3 'Barlow',sans-serif}
+*{box-sizing:border-box}
+.ecke{position:absolute;width:90px;height:90px;background:#EAC890;color:#1E1E1D;text-align:center;
+  font:800 56px/90px 'Big Shoulders Display',sans-serif}
+.e1{top:0;left:0}.e2{top:0;right:0}.e3{bottom:0;left:0}.e4{bottom:0;right:0}
+.oben{text-align:center;padding-top:36px}
+.dreieck{width:0;height:0;margin:0 auto;border-left:90px solid transparent;border-right:90px solid transparent;
+  border-bottom:130px solid #EAC890}
+.wort{font:900 110px/1 'Big Shoulders Display',sans-serif;margin-top:10px}
+h1{font:900 92px/1 'Big Shoulders Display',sans-serif;margin:30px 60px 12px}
+.hinweis{margin:0 60px 20px;color:rgba(234,200,144,.75)}
+table{margin:0 60px;border-collapse:collapse;width:960px}
+td{padding:8px 0;vertical-align:top;border-top:1px solid rgba(234,200,144,.25)}
+td:first-child{width:280px;font-weight:700}
+td.klein{font-size:22px;line-height:1.25;word-break:break-all}
+.gut{color:#8CC497}.schlecht{color:#FF5A1F}
+.video{position:absolute;left:60px;right:60px;bottom:130px;height:470px;background:#141413;overflow:hidden}
+.video video{display:block;width:100%;height:100%;object-fit:cover}
+</style></head><body>
+<div class="ecke e1">1</div><div class="ecke e2">2</div><div class="ecke e3">3</div><div class="ecke e4">4</div>
+<div class="oben"><div class="dreieck"></div><div class="wort">OBEN</div></div>
+<h1>Test für den Bildschirm</h1>
+<p class="hinweis">Bitte ein Foto vom ganzen Bildschirm schicken. Die Ecken 1 bis 4 müssen zu sehen sein.
+Zeigt der Pfeil nicht nach oben: an die Adresse <b>?drehen=links</b> oder <b>?drehen=rechts</b> hängen.</p>
+<table>
+<tr><td>Chrome</td><td id="chrome">…</td></tr>
+<tr><td>Browser</td><td id="ua" class="klein">…</td></tr>
+<tr><td>Fenster</td><td id="fenster">…</td></tr>
+<tr><td>Abstände</td><td id="abstand">…</td></tr>
+<tr><td>Uhrzeit</td><td id="uhr">…</td></tr>
+<tr><td>Zeitzone</td><td id="zone">…</td></tr>
+<tr><td>Karte jetzt</td><td id="karte">…</td></tr>
+<tr><td>Video</td><td id="video">…</td></tr>
+<tr><td>Server</td><td id="server">…</td></tr>
+<tr><td>Geladen um</td><td id="geladen">…</td></tr>
+</table>
+<div class="video"><video src="video/burger.mp4" autoplay muted loop playsinline preload="auto"></video></div>
+<script>
+(function () {
+  function setze(id, text, gut) {
+    var e = document.getElementById(id);
+    e.textContent = text;
+    e.className = (id === 'ua' ? 'klein ' : '') + (gut === true ? 'gut' : gut === false ? 'schlecht' : '');
+  }
+  function zwei(n) { return (n < 10 ? '0' : '') + n; }
+  function uhrzeit(d) { return zwei(d.getHours()) + ':' + zwei(d.getMinutes()) + ':' + zwei(d.getSeconds()); }
+
+  var ua = navigator.userAgent, m = ua.match(/Chrome\/(\d+)/);
+  setze('chrome', m ? 'Version ' + m[1] : 'nicht erkannt');
+  setze('ua', ua);
+
+  function fenster() {
+    var w = window.innerWidth, h = window.innerHeight;
+    setze('fenster', w + ' × ' + h + ' Pixel, Faktor ' + (window.devicePixelRatio || 1) + ', ' +
+      (h > w ? 'hochkant' : 'quer'), h > w);
+  }
+  fenster();
+  window.addEventListener('resize', fenster);
+
+  // Kann der Browser `gap` in Flexbox? Unsere Seiten brauchen es nicht mehr. Es zeigt nur, wie alt er ist.
+  var t = document.createElement('div');
+  t.style.cssText = 'position:absolute;visibility:hidden;display:flex;flex-direction:column;row-gap:10px';
+  t.appendChild(document.createElement('div'));
+  t.appendChild(document.createElement('div'));
+  document.body.appendChild(t);
+  var neu = t.offsetHeight === 10;
+  document.body.removeChild(t);
+  setze('abstand', neu ? 'Browser kann gap (neu)' : 'Browser kann kein gap (alt). Unsere Seiten gehen trotzdem.');
+
+  var K = window.KONFIG || {}, bis = K.fruehstueck_bis || '12:00', zone = '';
+  try { zone = Intl.DateTimeFormat().resolvedOptions().timeZone || ''; } catch (e) {}
+  function uhr() {
+    var d = new Date(), off = -d.getTimezoneOffset() / 60, jetzt = zwei(d.getHours()) + ':' + zwei(d.getMinutes());
+    setze('uhr', uhrzeit(d) + ' Uhr am ' + zwei(d.getDate()) + '.' + zwei(d.getMonth() + 1) + '.' + d.getFullYear());
+    setze('zone', (zone || 'unbekannt') + ', UTC' + (off >= 0 ? '+' : '') + off, zone === 'Europe/Berlin');
+    setze('karte', (jetzt < bis ? 'morgens' : 'ab Mittag') + ', Wechsel um ' + bis + ' Uhr');
+  }
+  uhr();
+  setInterval(uhr, 1000);
+
+  var vid = document.querySelector('video'), zustand = 'lädt';
+  vid.addEventListener('playing', function () { zustand = 'läuft'; });
+  vid.addEventListener('error', function () { zustand = 'Fehler'; });
+  var start = vid.play();
+  if (start && start.catch) start.catch(function () { if (zustand !== 'läuft') zustand = 'blockiert'; });
+  function videoStand() {
+    if (zustand === 'Fehler') { setze('video', 'Fehler beim Laden', false); return; }
+    if (zustand === 'blockiert') { setze('video', 'startet nicht von selbst', false); return; }
+    if (zustand !== 'läuft') { setze('video', 'lädt …'); return; }
+    var q = vid.getVideoPlaybackQuality ? vid.getVideoPlaybackQuality() : null;
+    var bilder = q ? q.totalVideoFrames : (vid.webkitDecodedFrameCount || 0);
+    var weg = q ? q.droppedVideoFrames : (vid.webkitDroppedFrameCount || 0);
+    var anteil = bilder ? Math.round(100 * weg / bilder) : 0;
+    setze('video', 'läuft, ' + bilder + ' Bilder, ' + weg + ' verloren (' + anteil + ' %)', anteil <= 2);
+  }
+  setInterval(videoStand, 1000);
+
+  // Liegt eine neue stand.txt auf dem Server, lädt sich die Testseite neu (hier alle 10 Sekunden).
+  var stand = null;
+  function server() {
+    fetch('stand.txt?' + Date.now()).then(function (r) {
+      if (!r.ok) throw new Error('HTTP ' + r.status);
+      return r.text();
+    }).then(function (text) {
+      if (stand !== null && text !== stand) { location.reload(); return; }
+      stand = text;
+      var n = parseInt(text, 10), d = new Date(n * 1000);
+      setze('server', 'erreichbar, Stand vom ' + (n ? zwei(d.getDate()) + '.' + zwei(d.getMonth() + 1) + '. ' +
+        zwei(d.getHours()) + ':' + zwei(d.getMinutes()) : text) + ', geprüft ' + uhrzeit(new Date()), true);
+    }).catch(function () {
+      setze('server', 'nicht erreichbar. Läuft die Seite als Datei statt vom Server?', false);
+    });
+  }
+  server();
+  setInterval(server, 10000);
+  setze('geladen', uhrzeit(new Date()) + ' Uhr');
+})();
+</script>
+<script>
+(function () {
+  var drehen = new URLSearchParams(location.search).get('drehen');
+  function einpassen() {
+    var st = document.body.style, w = window.innerWidth, h = window.innerHeight;
+    var quer = drehen === 'links' || drehen === 'rechts';
+    if (!quer && w === 1080 && h === 1920) { st.transform = ''; return; }
+    var s = quer ? Math.min(w / 1920, h / 1080) : Math.min(w / 1080, h / 1920), x, y, dreh = '';
+    if (!quer) { x = (w - 1080 * s) / 2; y = (h - 1920 * s) / 2; }
+    else if (drehen === 'links') { x = (w - 1920 * s) / 2; y = (h + 1080 * s) / 2; dreh = ' rotate(-90deg)'; }
+    else { x = (w + 1920 * s) / 2; y = (h - 1080 * s) / 2; dreh = ' rotate(90deg)'; }
+    st.transformOrigin = '0 0';
+    st.transform = 'translate(' + x + 'px,' + y + 'px) scale(' + s + ')' + dreh;
+  }
+  einpassen();
+  window.addEventListener('resize', einpassen);
+})();
+</script>
+</body></html>
