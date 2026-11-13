@@ -1,0 +1,327 @@
+<!doctype html><html lang="de"><head><meta charset="utf-8"><meta name="viewport" content="width=1080"><title>Bildschirm 4</title>
+<link rel="stylesheet" href="schrift.css"><style>
+:root{--grill:#1E1E1D;--brioche:#EAC890;--pruefen:#FF5A1F;--s:1}
+body.dunkel{--bg:var(--grill);--ink:var(--brioche);--muted:rgba(234,200,144,.70);--herb:#8CC497}
+body.hell{--bg:var(--brioche);--ink:var(--grill);--muted:rgba(30,30,29,.72);--herb:#245C31}
+html,body{margin:0;padding:0;width:1080px;height:1920px;overflow:hidden;background:var(--bg);color:var(--ink)}
+*{box-sizing:border-box}
+.screen{width:1080px;height:1920px;display:flex;flex-direction:column;overflow:hidden}
+.video{position:relative;height:680px;flex:0 0 auto;background:#141413;overflow:hidden}
+.platzhalter{position:absolute;top:0;right:0;bottom:0;left:0;display:flex;flex-direction:column;align-items:center;justify-content:center;
+  padding-bottom:150px;background:repeating-linear-gradient(135deg,rgba(234,200,144,.07) 0 18px,transparent 18px 36px)}
+.platzhalter>*+*{margin-top:22px}
+.play{width:0;height:0;margin-left:12px;border-left:64px solid rgba(234,200,144,.6);
+  border-top:38px solid transparent;border-bottom:38px solid transparent}
+.platzhalter .label{font:600 30px/1.3 'Barlow',sans-serif;color:rgba(234,200,144,.68);text-align:center}
+.video::after{content:"";position:absolute;top:0;right:0;bottom:0;left:0;pointer-events:none;
+  background:linear-gradient(to bottom,rgba(20,20,19,.6) 0,rgba(20,20,19,0) 24%,rgba(20,20,19,0) 48%,rgba(20,20,19,.9) 100%)}
+.video-oben{position:absolute;z-index:2;top:52px;left:60px;right:60px;display:flex;align-items:center;justify-content:space-between}
+.video-oben img{height:76px;width:auto;display:block}
+[hidden]{display:none!important}
+html.render,html.render body,html.render .screen,html.render .video{background:transparent!important}
+html.render video{visibility:hidden}
+html.render .inhalt,html.render .kopf{background:var(--bg)}
+html.render .titel.frei{margin:0;padding:24px 60px 0;background:var(--bg)}
+.video-oben .rechts{display:flex;flex-direction:column;align-items:flex-end}
+.video-oben .rechts>*+*{margin-top:14px}
+.still{position:absolute;top:0;right:0;bottom:0;left:0;width:100%;height:100%;object-fit:cover;object-position:center}
+.ki{font:600 20px/1 'Barlow',sans-serif;color:rgba(234,200,144,.9);background:rgba(20,20,19,.6);
+  padding:7px 12px 8px;border-radius:999px}
+.play-knopf{position:absolute;z-index:2;left:50%;top:38%;transform:translate(-50%,-50%);width:150px;height:150px;
+  border-radius:50%;background:rgba(20,20,19,.5);box-shadow:inset 0 0 0 4px rgba(234,200,144,.9)}
+.play-knopf::after{content:"";position:absolute;left:60px;top:45px;border-left:50px solid rgba(234,200,144,.95);
+  border-top:30px solid transparent;border-bottom:30px solid transparent}
+.video.unten .play-knopf{top:54%}
+.video.unten::after{background:linear-gradient(to bottom,var(--bg) 0,rgba(0,0,0,0) 16%)}
+.video.unten .ki{position:absolute;z-index:2;right:60px;bottom:30px}
+.kicker{font:600 34px/1 'Barlow',sans-serif;margin:0}
+.video-oben .kicker{color:var(--brioche)}
+.titel{margin:0;white-space:nowrap;font-family:'Big Shoulders Display',sans-serif;font-weight:900;font-size:208px;
+  line-height:.86;letter-spacing:-.01em}
+.video .titel{position:absolute;z-index:2;left:60px;right:60px;bottom:46px;color:var(--brioche)}
+.kopf{display:flex;align-items:center;justify-content:space-between;padding:52px 60px 0;flex:0 0 auto}
+.kopf img{height:76px;width:auto;display:block}
+.titel.frei{margin:24px 60px 0;color:var(--ink);flex:0 0 auto}
+.inhalt{flex:1 1 auto;min-height:0;overflow:hidden;display:flex;flex-direction:column;padding:46px 60px 48px}
+.gruppen{display:flex;flex-direction:column}
+.gruppen:not(.zwei)>*+*{margin-top:calc(34px*var(--s))}
+.gruppen.zwei{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);column-gap:44px;align-items:start;--name:44px;--text:22px}
+.spalte{display:flex;flex-direction:column}
+.spalte>*+*{margin-top:calc(34px*var(--s))}
+.gkopf{display:flex;align-items:flex-end;justify-content:space-between;margin-bottom:calc(14px*var(--s))}
+.gtitel{font-family:'Big Shoulders Display',sans-serif;font-weight:800;font-size:calc(42px*var(--s));line-height:1;margin:0;
+  background:var(--ink);color:var(--bg);padding:calc(7px*var(--s)) calc(18px*var(--s)) calc(9px*var(--s));border-radius:14px 14px 14px 4px}
+.spalten{display:flex;font:600 calc(24px*var(--s))/1 'Barlow',sans-serif;color:var(--muted)}
+.spalten span,.preis{width:calc(140px*var(--s));text-align:right}
+.eintraege{display:flex;flex-direction:column}
+.eintraege>*+*{margin-top:calc(18px*var(--s))}
+.raster2{--name:48px}
+.raster2 .eintraege{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);column-gap:44px;row-gap:calc(16px*var(--s))}
+.raster2 .eintraege>*+*{margin-top:0}
+.raster2 .preis{width:auto}
+.raster2 .preis.breit{min-width:0}
+.zeile{display:flex;align-items:baseline;justify-content:space-between}
+.zeile>*+*{margin-left:16px}
+.name,.preise{font-family:'Big Shoulders Display',sans-serif;font-weight:800;font-size:calc(var(--name,54px)*var(--s));line-height:1.02}
+.preise{display:flex;flex:0 0 auto}
+.preis{white-space:nowrap}
+.zwei .preis{width:auto}
+.preis.breit{width:auto;min-width:calc(140px*var(--s))}
+.preis.pruefen::before{content:"";display:inline-block;width:calc(14px*var(--s));height:calc(14px*var(--s));
+  border-radius:50%;background:var(--pruefen);margin-right:calc(8px*var(--s));vertical-align:.12em}
+.z{white-space:nowrap}
+.text{font:500 calc(var(--text,26px)*var(--s))/1.28 'Barlow',sans-serif;color:var(--muted);margin-top:calc(6px*var(--s))}
+.tag{display:inline-block;vertical-align:.08em;margin-right:10px;font:700 calc(19px*var(--s))/1 'Barlow',sans-serif;
+  padding:calc(5px*var(--s)) calc(10px*var(--s)) calc(6px*var(--s));border-radius:999px}
+.tag.vegan,.tag.veggie{background:var(--herb);color:var(--bg)}
+.tag.neu{box-shadow:inset 0 0 0 2px var(--ink);color:var(--ink)}
+.hinweis{font:500 calc(24px*var(--s))/1.3 'Barlow',sans-serif;color:var(--muted);margin-top:calc(16px*var(--s))}
+.fuss{margin-top:auto;padding-top:calc(26px*var(--s));display:flex;flex-direction:column;
+  font:500 calc(21px*var(--s))/1.32 'Barlow',sans-serif;color:var(--muted)}
+.fuss>*+*{margin-top:6px}
+.fuss .reihe{display:flex;justify-content:space-between}
+.fuss .reihe>*+*{margin-left:24px}
+.punkt{display:inline-block;width:13px;height:13px;border-radius:50%;background:var(--pruefen);margin-right:10px}
+</style><script src="konfig.js"></script></head>
+<body class="hell"><main class="screen" data-karte="Eier &amp; Co." data-zeit="morgens">
+<header class="kopf"><img src="logo/tb_grill.png" alt="Two Bro's"><p class="kicker">Frühstück</p></header><h1 class="titel frei">Eier &amp; Co.</h1>
+<div class="inhalt"><div class="gruppen"><section class="gruppe" data-gruppe="Aus der Pfanne"><div class="gkopf"><h2 class="gtitel">Aus der Pfanne</h2></div><div class="eintraege"><div class="eintrag"><div class="zeile"><span class="name"><span class="z">Spiegelei oder Rührei</span></span><span class="preise"><span class="preis pruefen">3,90</span></span></div><div class="text"><span class="tag veggie">veggie</span><span class="z">2 Eier mit Bauernbrot</span></div></div><div class="eintrag"><div class="zeile"><span class="name"><span class="z">Shakshuka im Pfännli</span></span><span class="preise"><span class="preis pruefen">8,90</span></span></div><div class="text"><span class="tag veggie">veggie</span><span class="z">2 pochierte Eier</span>, <span class="z">würzige Paprika</span>, <span class="z">Tomaten</span>, <span class="z">Zwiebeln</span>, <span class="z">Feta</span>, <span class="z">Petersilie</span>, <span class="z">Harissa</span></div></div><div class="eintrag"><div class="zeile"><span class="name"><span class="z">Feta</span>, <span class="z">Champignons oder Harissa</span></span><span class="preise"><span class="preis breit pruefen">+1,00</span></span></div><div class="text"><span class="z">Extra zur Pfanne</span></div></div><div class="eintrag"><div class="zeile"><span class="name"><span class="z">Sucuk oder Pastirma</span></span><span class="preise"><span class="preis breit pruefen">+2,00</span></span></div><div class="text"><span class="z">Extra zur Pfanne</span></div></div></div></section><section class="gruppe" data-gruppe="Specials"><div class="gkopf"><h2 class="gtitel">Specials</h2></div><div class="eintraege"><div class="eintrag"><div class="zeile"><span class="name"><span class="z">Avocado-Creme</span></span><span class="preise"><span class="preis pruefen">3,90</span></span></div><div class="text"><span class="tag vegan">vegan</span><span class="z">Mit Olivenöl und Bauernbrot</span></div></div><div class="eintrag"><div class="zeile"><span class="name"><span class="z">Hummus</span></span><span class="preise"><span class="preis pruefen">3,90</span></span></div><div class="text"><span class="tag vegan">vegan</span><span class="z">Hummus-Creme mit Olivenöl und Bauernbrot</span></div></div><div class="eintrag"><div class="zeile"><span class="name"><span class="z">Beilagensalat</span></span><span class="preise"><span class="preis pruefen">3,90</span></span></div><div class="text"><span class="tag vegan">vegan</span></div></div><div class="eintrag"><div class="zeile"><span class="name"><span class="z">Acai Bowl</span></span><span class="preise"><span class="preis pruefen">7,90</span></span></div><div class="text"><span class="tag veggie">veggie</span><span class="z">Acai-Smoothie</span>, <span class="z">Banane</span>, <span class="z">Himbeeren</span>, <span class="z">Erdbeeren</span>, <span class="z">Granola</span>, <span class="z">Kokosflocken</span></div></div></div></section></div><footer class="fuss"><div><span class="punkt"></span>Preis aus der alten Karte vom März 2025 – bitte prüfen</div><div class="reihe"><span>Alle Preise in Euro</span></div></footer></div>
+
+</main><main class="screen" data-karte="Salate" data-zeit="mittag">
+<header class="kopf"><img src="logo/tb_grill.png" alt="Two Bro's"></header><h1 class="titel frei">Salate</h1>
+<div class="inhalt"><div class="gruppen"><section class="gruppe" data-gruppe=""><div class="eintraege"><div class="eintrag"><div class="zeile"><span class="name"><span class="z">Hamra</span></span><span class="preise"><span class="preis">12,50</span></span></div><div class="text"><span class="tag vegan">vegan</span><span class="z">Cherrytomaten</span>, <span class="z">Gurken</span>, <span class="z">Zwiebeln</span>, <span class="z">Rucola</span>, <span class="z">frittiertes Fladenbrot</span>, <span class="z">Sumach</span>, <span class="z">Granatapfel-Dressing</span></div></div><div class="eintrag"><div class="zeile"><span class="name"><span class="z">Nizza</span></span><span class="preise"><span class="preis">13,00</span></span></div><div class="text"><span class="z">Rucola</span>, <span class="z">Thunfisch</span>, <span class="z">Büffel-Mini-Mozzarella</span>, <span class="z">Mais</span>, <span class="z">Paprika</span>, <span class="z">Zwiebeln</span>, <span class="z">Honig-Senf-Sauce</span></div></div><div class="eintrag"><div class="zeile"><span class="name"><span class="z">Pula</span></span><span class="preise"><span class="preis">14,00</span></span></div><div class="text"><span class="z">Hähnchenfilet-Streifen</span>, <span class="z">Cherrytomaten</span>, <span class="z">Mais</span>, <span class="z">Rotkraut</span>, <span class="z">Möhre</span>, <span class="z">French-Dressing</span></div></div><div class="eintrag"><div class="zeile"><span class="name"><span class="z">Osaka</span></span><span class="preise"><span class="preis">15,00</span></span></div><div class="text"><span class="tag neu">neu</span><span class="z">Paniertes Hähnchenfilet in Streifen</span>, <span class="z">Rucola</span>, <span class="z">Schafskäse</span>, <span class="z">Paprika</span>, <span class="z">Cherrytomaten</span>, <span class="z">Gurken</span>, <span class="z">Zwiebeln</span>, <span class="z">Knoblauch-Sauce</span></div></div><div class="eintrag"><div class="zeile"><span class="name"><span class="z">Dender</span></span><span class="preise"><span class="preis">16,50</span></span></div><div class="text"><span class="z">Hähnchenfilet-Streifen</span>, <span class="z">Avocado</span>, <span class="z">Cherrytomaten</span>, <span class="z">Mais</span>, <span class="z">Granatapfel-Kerne</span>, <span class="z">Büffel-Mini-Mozzarella</span>, <span class="z">Honig-Senf-Sauce</span></div></div><div class="eintrag"><div class="zeile"><span class="name"><span class="z">Rafah</span></span><span class="preise"><span class="preis">16,50</span></span></div><div class="text"><span class="tag vegan">vegan</span><span class="z">Bio-Falafel</span>, <span class="z">Cherrytomaten</span>, <span class="z">Mais</span>, <span class="z">Möhre</span>, <span class="z">Walnüsse</span>, <span class="z">Granatapfelkerne</span>, <span class="z">Tahini-Lemon-Sauce</span></div></div></div></section></div><footer class="fuss"><div>Alle Salate auf Lollo-Salat.</div><div class="reihe"><span>Alle Preise in Euro</span></div></footer></div>
+<div class="video unten"><video src="video/salate.mp4" class="still" autoplay muted loop playsinline preload="auto"></video></div>
+</main><script>
+(function () {
+  var treffer = /[?&]drehen=([^&]*)/.exec(location.search), drehen = treffer ? decodeURIComponent(treffer[1]) : null;
+  function einpassen() {
+    var st = document.body.style, w = window.innerWidth, h = window.innerHeight;
+    if (!w || !h) return;
+    var quer = drehen === 'links' || drehen === 'rechts';
+    if (!quer && w === 1080 && h === 1920) { st.transform = ''; return; }
+    var s = quer ? Math.min(w / 1920, h / 1080) : Math.min(w / 1080, h / 1920), x, y, dreh = '';
+    if (!quer) { x = (w - 1080 * s) / 2; y = (h - 1920 * s) / 2; }
+    else if (drehen === 'links') { x = (w - 1920 * s) / 2; y = (h + 1080 * s) / 2; dreh = ' rotate(-90deg)'; }
+    else { x = (w + 1920 * s) / 2; y = (h - 1080 * s) / 2; dreh = ' rotate(90deg)'; }
+    st.transformOrigin = '0 0';
+    st.transform = 'translate(' + x + 'px,' + y + 'px) scale(' + s + ')' + dreh;
+  }
+  einpassen();
+  window.addEventListener('resize', einpassen);
+  window.addEventListener('load', einpassen);
+  // Manche Web-Bausteine melden ihre Größe erst später und ohne resize-Ereignis.
+  setInterval(einpassen, 2000);
+})();
+</script><script>
+var K = window.KONFIG || {};
+var q = (function () {
+  var o = {}, teile = location.search.replace(/^\?/, '').split('&');
+  for (var i = 0; i < teile.length; i++) {
+    if (!teile[i]) continue;
+    var p = teile[i].split('=');
+    o[decodeURIComponent(p[0])] = decodeURIComponent((p[1] || '').replace(/\+/g, ' '));
+  }
+  return o;
+})();
+if (q.render) document.documentElement.className += ' render';
+var seiten = Array.prototype.slice.call(document.querySelectorAll('.screen'));
+function zwei(n) { return (n < 10 ? '0' : '') + n; }
+function passe(m) {
+  m.hidden = false;
+  var z = m.querySelector('.inhalt'), s = 1;
+  while (z.scrollHeight > z.clientHeight + 1 && s > 0.6) { s -= 0.01; m.style.setProperty('--s', s); }
+  m.setAttribute('data-scale', s.toFixed(2));
+}
+function zeige() {
+  var d = new Date(), jetzt = zwei(d.getHours()) + ':' + zwei(d.getMinutes());
+  var zeit = q.zeit || (jetzt < (K.fruehstueck_bis || '12:00') ? 'morgens' : 'mittag');
+  for (var i = 0; i < seiten.length; i++) {
+    var m = seiten[i], mz = m.getAttribute('data-zeit'), an = !mz || mz === zeit, v = m.querySelector('video');
+    m.hidden = !an;
+    if (v) {
+      if (an) { var p = v.play(); if (p && p['catch']) p['catch'](function () {}); }
+      else v.pause();
+    }
+  }
+}
+var gestartet = false;
+function start() {
+  if (gestartet) return;
+  gestartet = true;
+  for (var i = 0; i < seiten.length; i++) passe(seiten[i]);
+  zeige();
+  setInterval(zeige, 30000);
+}
+if (document.fonts && document.fonts.ready) document.fonts.ready.then(start);
+else window.addEventListener('load', start);
+// Liegt eine neue Fassung auf dem Server, lädt sich die Seite selbst neu.
+var stand = null;
+function pruefe() {
+  var x = new XMLHttpRequest();
+  x.onreadystatechange = function () {
+    if (x.readyState !== 4 || x.status !== 200) return;
+    var t = x.responseText;
+    if (stand && t !== stand) location.reload();
+    stand = t;
+  };
+  try { x.open('GET', 'stand.txt?' + new Date().getTime(), true); x.send(); } catch (e) {}
+}
+pruefe();
+setInterval(pruefe, 300000);
+</script><script>
+(function () {
+  var K = window.KONFIG || {};
+  if (!K.tabelle) return;
+  var SPEICHER = 'tb-tabelle', zuletzt = null, MINUS = '−';
+  function esc(s) {
+    return String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+  }
+  function zeilenText(t) {
+    var teile = t.split(', '), aus = [];
+    for (var i = 0; i < teile.length; i++) aus.push('<span class="z">' + esc(teile[i]) + '</span>');
+    return aus.join(', ');
+  }
+  function csv(text) {
+    var zeilen = [], zeile = [], feld = '', inQ = false, i, c;
+    text = text.replace(/^﻿/, '');
+    for (i = 0; i < text.length; i++) {
+      c = text.charAt(i);
+      if (inQ) {
+        if (c === '"') { if (text.charAt(i + 1) === '"') { feld += '"'; i++; } else inQ = false; }
+        else feld += c;
+      } else if (c === '"') inQ = true;
+      else if (c === ',') { zeile.push(feld); feld = ''; }
+      else if (c === '\n' || c === '\r') {
+        if (c === '\r' && text.charAt(i + 1) === '\n') i++;
+        zeile.push(feld); zeilen.push(zeile); zeile = []; feld = '';
+      } else feld += c;
+    }
+    if (feld !== '' || zeile.length) { zeile.push(feld); zeilen.push(zeile); }
+    return zeilen;
+  }
+  function wert(z, i) { return i === undefined ? '' : String(z[i] || '').replace(/^\s+|\s+$/g, ''); }
+  // 4,50 · 4.5 · 4 · +1,00 · ab 0,90 · je -1,00 · mit € — wird geschrieben wie auf den Karten. null = ungültig.
+  function preis(roh) {
+    var s = String(roh || '').replace(/€/g, '').replace(/\s+/g, ' ').replace(/^\s+|\s+$/g, '');
+    if (!s) return {text: '', breit: false};
+    var m = /^(\+|ab\s*|je\s*)?([-−]\s*)?(\d+)(?:[.,](\d{1,2}))?$/i.exec(s);
+    if (!m) return null;
+    var vor = !m[1] ? '' : m[1].charAt(0) === '+' ? '+' : m[1].replace(/\s+/g, '').toLowerCase() + ' ';
+    var cent = m[4] ? (m[4].length === 1 ? m[4] + '0' : m[4]) : '00';
+    return {text: vor + (m[2] ? MINUS : '') + parseInt(m[3], 10) + ',' + cent, breit: !!(vor || m[2])};
+  }
+  function spalten(kopf) {
+    var s = {}, k;
+    for (var i = 0; i < kopf.length; i++) {
+      k = kopf[i].toLowerCase().replace(/\s+/g, '').replace('ü', 'ue').replace('ß', 'ss');
+      if (k === 'karte') s.karte = i; else if (k === 'gruppe') s.gruppe = i; else if (k === 'name') s.name = i;
+      else if (k === 'preis') s.preis = i; else if (k === 'preisgross' || k === 'preis2') s.preis2 = i;
+      else if (k === 'beschreibung') s.text = i; else if (k === 'kennzeichen') s.tags = i;
+      else if (k === 'pruefen') s.pruefen = i; else if (k === 'zeigen') s.zeigen = i;
+    }
+    return s;
+  }
+  function eintragHtml(e) {
+    var preise = '', unten = '', i;
+    for (i = 0; i < e.preise.length; i++) {
+      var p = e.preise[i];
+      preise += '<span class="preis' + (p.breit ? ' breit' : '') + (e.pruefen && p.text ? ' pruefen' : '') + '">' +
+        esc(p.text) + '</span>';
+    }
+    for (i = 0; i < e.tags.length; i++) unten += '<span class="tag ' + e.tags[i] + '">' + e.tags[i] + '</span>';
+    if (e.text) unten += zeilenText(e.text);
+    return '<div class="eintrag"><div class="zeile"><span class="name">' + zeilenText(e.name) + '</span>' +
+      '<span class="preise">' + preise + '</span></div>' + (unten ? '<div class="text">' + unten + '</div>' : '') + '</div>';
+  }
+  function fuellen(m, liste) {
+    var gruppen = {}, reihe = [], i, g, html;
+    for (i = 0; i < liste.length; i++) {
+      g = liste[i].gruppe;
+      if (!gruppen.hasOwnProperty(g)) { gruppen[g] = []; reihe.push(g); }
+      gruppen[g].push(liste[i]);
+    }
+    var sektionen = m.querySelectorAll('section.gruppe[data-gruppe]'), da = {};
+    for (i = 0; i < sektionen.length; i++) {
+      g = sektionen[i].getAttribute('data-gruppe');
+      da[g] = true;
+      if (!gruppen.hasOwnProperty(g)) { sektionen[i].style.display = 'none'; continue; }
+      html = '';
+      for (var a = 0; a < gruppen[g].length; a++) html += eintragHtml(gruppen[g][a]);
+      sektionen[i].querySelector('.eintraege').innerHTML = html;
+      sektionen[i].style.display = '';
+    }
+    for (i = 0; i < reihe.length; i++) {
+      g = reihe[i];
+      if (da[g]) continue;
+      var neu = document.createElement('section');
+      neu.className = 'gruppe';
+      neu.setAttribute('data-gruppe', g);
+      html = '';
+      for (var b = 0; b < gruppen[g].length; b++) html += eintragHtml(gruppen[g][b]);
+      neu.innerHTML = (g ? '<div class="gkopf"><h2 class="gtitel">' + esc(g) + '</h2></div>' : '') +
+        '<div class="eintraege">' + html + '</div>';
+      var sp = m.querySelectorAll('.gruppen .spalte');
+      (sp.length ? sp[sp.length - 1] : m.querySelector('.gruppen')).appendChild(neu);
+    }
+    var mitPunkt = !!m.querySelector('.preis.pruefen'), punkte = m.querySelectorAll('.fuss .punkt');
+    for (i = 0; i < punkte.length; i++) punkte[i].parentNode.style.display = mitPunkt ? '' : 'none';
+  }
+  // Gibt true zurück, wenn die Tabelle lesbar ist. Karten mit einem Fehler bleiben unverändert.
+  function anwenden(text) {
+    var z = csv(text);
+    if (z.length < 2) return false;
+    var s = spalten(z[0]);
+    if (s.karte === undefined || s.name === undefined || s.preis === undefined) return false;
+    var karten = {}, kaputt = {}, i;
+    for (i = 1; i < z.length; i++) {
+      var karte = wert(z[i], s.karte), name = wert(z[i], s.name);
+      if (!karte && !name) continue;
+      if (/^(nein|n|no|false|falsch|0|aus)$/i.test(wert(z[i], s.zeigen))) continue;
+      var p1 = preis(wert(z[i], s.preis)), p2 = preis(wert(z[i], s.preis2));
+      if (!name || !p1 || !p2) { kaputt[karte] = true; continue; }
+      var tags = [], roh = wert(z[i], s.tags).toLowerCase().split(/[,;\s]+/);
+      for (var t = 0; t < roh.length; t++) if (/^(vegan|veggie|neu)$/.test(roh[t])) tags.push(roh[t]);
+      (karten[karte] = karten[karte] || []).push({gruppe: wert(z[i], s.gruppe), name: name, text: wert(z[i], s.text),
+        preise: p2.text ? [p1, p2] : p1.text ? [p1] : [], tags: tags, pruefen: !!wert(z[i], s.pruefen)});
+    }
+    var screens = document.querySelectorAll('main.screen[data-karte]'), geaendert = false;
+    for (i = 0; i < screens.length; i++) {
+      var k = screens[i].getAttribute('data-karte');
+      if (!karten[k] || kaputt[k]) continue;
+      fuellen(screens[i], karten[k]);
+      geaendert = true;
+    }
+    if (geaendert) {
+      for (i = 0; i < screens.length; i++) {
+        screens[i].style.setProperty('--s', 1);
+        if (typeof passe === 'function') passe(screens[i]);
+      }
+      if (typeof zeige === 'function') zeige();
+    }
+    return true;
+  }
+  function laden() {
+    var x = new XMLHttpRequest();
+    x.onreadystatechange = function () {
+      if (x.readyState !== 4 || x.status !== 200 || !x.responseText || x.responseText === zuletzt) return;
+      if (anwenden(x.responseText)) {
+        zuletzt = x.responseText;
+        try { localStorage.setItem(SPEICHER, zuletzt); } catch (e) {}
+      }
+    };
+    try {
+      x.open('GET', K.tabelle + (K.tabelle.indexOf('?') < 0 ? '?' : '&') + 't=' + new Date().getTime(), true);
+      x.send();
+    } catch (e) {}
+  }
+  function start() {
+    var alt = null;
+    try { alt = localStorage.getItem(SPEICHER); } catch (e) {}
+    if (alt && anwenden(alt)) zuletzt = alt;
+    laden();
+    setInterval(laden, 120000);
+  }
+  if (document.fonts && document.fonts.ready) document.fonts.ready.then(start);
+  else window.addEventListener('load', start);
+})();
+</script></body></html>
