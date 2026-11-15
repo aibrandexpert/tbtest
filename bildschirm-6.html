@@ -107,7 +107,7 @@ html.render .titel.frei{margin:0;padding:24px 60px 0;background:var(--bg)}
 <div class="video"><video src="video/fingerfood-ruhig.mp4?v=856f1bbc" class="still" autoplay muted loop playsinline preload="auto"></video><div class="video-oben"><img src="logo/tb_brioche.png" alt="Two Bro's"><div class="rechts"></div></div><h1 class="titel">Fingerfood</h1></div>
 <div class="inhalt"><div class="gruppen"><section class="gruppe raster2" data-gruppe="Pommes &amp; Co."><div class="gkopf"><h2 class="gtitel">Pommes &amp; Co.</h2></div><div class="eintraege"><div class="eintrag"><div class="zeile"><span class="name"><span class="z">Pommes</span></span><span class="preise"><span class="preis">5,00</span></span></div><div class="text"><span class="tag vegan">vegan</span></div></div><div class="eintrag"><div class="zeile"><span class="name"><span class="z">Wedges</span></span><span class="preise"><span class="preis">5,50</span></span></div><div class="text"><span class="tag vegan">vegan</span><span class="z">Country Potatoes</span></div></div><div class="eintrag"><div class="zeile"><span class="name"><span class="z">Curly Fries</span></span><span class="preise"><span class="preis">5,50</span></span></div><div class="text"><span class="tag vegan">vegan</span><span class="z">Lockenpommes</span></div></div><div class="eintrag"><div class="zeile"><span class="name"><span class="z">Sweet Potatoes</span></span><span class="preise"><span class="preis">6,50</span></span></div><div class="text"><span class="tag vegan">vegan</span><span class="z">Süßkartoffel-Pommes</span></div></div><div class="eintrag"><div class="zeile"><span class="name"><span class="z">Potatoes Mix</span></span><span class="preise"><span class="preis">5,50</span></span></div><div class="text"><span class="z">Pommes</span>, <span class="z">Wedges</span>, <span class="z">Curly Fries</span>, <span class="z">Sweet Potatoes</span></div></div><div class="eintrag"><div class="zeile"><span class="name"><span class="z">Coleslaw</span></span><span class="preise"><span class="preis">5,50</span></span></div><div class="text"><span class="z">Weißkraut-Karotten-Salat</span></div></div></div></section><section class="gruppe raster2" data-gruppe="Snacks"><div class="gkopf"><h2 class="gtitel">Snacks</h2></div><div class="eintraege"><div class="eintrag"><div class="zeile"><span class="name"><span class="z">Chicken Nuggets</span></span><span class="preise"><span class="preis">6,50</span></span></div><div class="text"><span class="z">7 Stück</span>, <span class="z">Hähnchenfilet in Panade</span></div></div><div class="eintrag"><div class="zeile"><span class="name"><span class="z">Mozzarella Sticks</span></span><span class="preise"><span class="preis">5,50</span></span></div><div class="text"><span class="z">6 Stück</span></div></div><div class="eintrag"><div class="zeile"><span class="name"><span class="z">Butterfly Shrimps</span></span><span class="preise"><span class="preis">5,50</span></span></div><div class="text"><span class="z">7 Stück</span></div></div><div class="eintrag"><div class="zeile"><span class="name"><span class="z">Hot Wings</span></span><span class="preise"><span class="preis">7,50</span></span></div><div class="text"><span class="z">5 Stück</span>, <span class="z">pikant gewürzt</span></div></div><div class="eintrag"><div class="zeile"><span class="name"><span class="z">Curry Wurst</span></span><span class="preise"><span class="preis">8,50</span></span></div><div class="text"><span class="z">Brioche Bun</span>, <span class="z">2 × 100 g Rindswurst aus eigener Herstellung</span></div></div></div></section><section class="gruppe raster2" data-gruppe="Zum Teilen"><div class="gkopf"><h2 class="gtitel">Zum Teilen</h2></div><div class="eintraege"><div class="eintrag"><div class="zeile"><span class="name"><span class="z">Hot Wings Bucket</span></span><span class="preise"><span class="preis">18,50</span></span></div><div class="text"><span class="z">13 Hot Wings</span></div></div><div class="eintrag"><div class="zeile"><span class="name"><span class="z">Chicken Mix Bucket</span></span><span class="preise"><span class="preis">17,50</span></span></div><div class="text"><span class="z">7 Hot Wings</span>, <span class="z">9 Chicken Nuggets</span></div></div></div></section></div><footer class="fuss"><div class="reihe"><span>Alle Preise in Euro</span></div></footer></div>
 
-</main><main class="screen zu" data-zeit="geschlossen" hidden><img src="logo/tb_brioche.png" alt="Two Bro's"><p class="vor">Für heute haben wir</p><h1>geschlossen</h1><p class="danke">Danke für deinen Besuch!</p><p class="wieder">Ab 10 Uhr sind wir wieder für dich da.</p></main><div class="takeover" data-plan="rechts,links" data-links="video/takeover-links.mp4?v=fcf9d593" data-rechts="video/takeover-rechts.mp4?v=70490818"><video muted playsinline preload="auto"></video></div><script>
+</main><main class="screen zu" data-zeit="geschlossen" hidden><img src="logo/tb_brioche.png" alt="Two Bro's"><p class="vor">Für heute haben wir</p><h1>geschlossen</h1><p class="danke">Danke für deinen Besuch!</p><p class="wieder">Ab 10 Uhr sind wir wieder für dich da.</p></main><div class="takeover" data-plan="rechts,links" data-vorlauf="3" data-links="video/takeover-links.mp4?v=47e89f0b" data-rechts="video/takeover-rechts.mp4?v=9c341155"><video muted playsinline preload="auto"></video></div><script>
 (function () {
   var treffer = /[?&]drehen=([^&]*)/.exec(location.search), drehen = treffer ? decodeURIComponent(treffer[1]) : null;
   function einpassen() {
@@ -384,56 +384,69 @@ setInterval(pruefe, 300000);
   if (!box) return;
   var K = window.KONFIG || {}, alleS = K.takeover_alle === undefined ? 120 : K.takeover_alle;
   var v = box.querySelector('video'), plan = (box.getAttribute('data-plan') || '').split(',');
-  var test = /[?&]takeover=([^&]*)/.exec(location.search), geplant = null;
+  var vor = parseFloat(box.getAttribute('data-vorlauf')) || 0;
+  var test = /[?&]takeover=([^&]*)/.exec(location.search);
+  var uhren = [], takt = null, sichtbarAb = 0, sprung = 0.3, sprungStart = 0;
+  function spaeter(f, ms) { uhren.push(setTimeout(f, Math.max(0, ms))); }
+  function aufraeumen() { while (uhren.length) clearTimeout(uhren.pop()); clearInterval(takt); }
   function laden(r) {
     var src = r ? box.getAttribute('data-' + r) : '';
     if (src && v.getAttribute('src') !== src) { v.setAttribute('src', src); try { v.load(); } catch (e) {} }
   }
   function rolle(slot) { return plan[((slot % plan.length) + plan.length) % plan.length] || ''; }
-  // Gleichlauf, Fassung 2 (15.11.2026): Am Gerät brauchte ein Sprung (currentTime) bis zu 1 s und kam dadurch
-  // zu spät. Jetzt: 2,5 s vorher unsichtbar anlaufen lassen (Decoder warm), dann ohne Sprung starten und
-  // kleine Abweichungen über die Abspielgeschwindigkeit ausgleichen (höchstens 25 % schneller, 20 % langsamer).
-  var takt = null, warm = null;
-  function vorwaermen() {
-    box.className = 'takeover warm';
-    try { v.currentTime = 0; } catch (e) {}
-    var p = v.play(); if (p && p['catch']) p['catch'](function () {});
-    warm = setTimeout(function () { v.pause(); try { v.currentTime = 0; } catch (e) {} }, 800);
-  }
-  function gleichlauf(beginn) {
+  v.addEventListener('seeked', function () {
+    if (sprungStart) { sprung = 0.3 * sprung + 0.7 * (Date.now() - sprungStart) / 1000; sprungStart = 0; }
+  });
+  // null0 = Uhrzeit (ms), zu der das Video bei 0 stehen soll.
+  function gleichlauf(null0) {
     clearInterval(takt);
     takt = setInterval(function () {
-      if (v.paused || v.ended) return;
-      var diff = (Date.now() - beginn) / 1000 - v.currentTime, rate = 1;
-      if (diff > 1.5 || diff < -1.5) { try { v.currentTime = Math.max(0, (Date.now() - beginn) / 1000); } catch (e) {} }
-      else if (diff > 0.04) rate = 1 + Math.min(0.25, diff);
-      else if (diff < -0.04) rate = 1 - Math.min(0.2, -diff);
+      if (v.paused || v.ended || v.seeking) return;
+      var jetzt = Date.now(), soll = (jetzt - null0) / 1000, diff = soll - v.currentTime, rate = 1;
+      var unsichtbar = jetzt < sichtbarAb - 250;
+      if (unsichtbar ? Math.abs(diff) > 0.05 : Math.abs(diff) > 1.5) {
+        sprungStart = jetzt;
+        v.playbackRate = 1;
+        try { v.currentTime = Math.max(0, soll + Math.min(1.5, sprung)); } catch (e) {}
+        return;
+      }
+      if (diff > 0.02) rate = 1 + Math.min(0.25, 2 * diff);
+      else if (diff < -0.02) rate = 1 - Math.min(0.2, -2 * diff);
       if (Math.abs(v.playbackRate - rate) > 0.01) v.playbackRate = rate;
-    }, 250);
+    }, 200);
   }
-  function abspielen(beginn) {
-    clearTimeout(warm);
-    box.className = 'takeover an';
-    if (typeof zeige === 'function') zeige();
-    if (v.currentTime > 0.3) { try { v.currentTime = 0; } catch (e) {} }
-    v.playbackRate = 1;
-    var p = v.play(); if (p && p['catch']) p['catch'](function () {});
-    gleichlauf(beginn);
+  function runde(null0, r) {
+    aufraeumen();
+    laden(r);
+    sichtbarAb = null0 + vor * 1000;
+    spaeter(function () {
+      if (window.ZEIT === 'geschlossen') { naechster(); return; }
+      box.className = 'takeover warm';
+      v.playbackRate = 1;
+      try { v.currentTime = 0; } catch (e) {}
+    }, null0 - 700 - Date.now());
+    spaeter(function () {
+      if (window.ZEIT === 'geschlossen') return;
+      var p = v.play(); if (p && p['catch']) p['catch'](function () {});
+      gleichlauf(null0);
+    }, null0 - Date.now());
+    spaeter(function () {
+      if (window.ZEIT === 'geschlossen') { clearInterval(takt); box.className = 'takeover'; v.pause(); naechster(); return; }
+      box.className = 'takeover an';
+      if (typeof zeige === 'function') zeige();
+    }, sichtbarAb - Date.now());
   }
   function naechster() {
-    clearTimeout(geplant);
+    aufraeumen();
     if (!(alleS > 0)) return;
     var alle = alleS * 1000, slot = Math.floor(Date.now() / alle) + 1;
-    for (var i = 0; i < plan.length && !rolle(slot); i++) slot++;
+    for (var i = 0; i < 2 * plan.length; i++) {
+      if (rolle(slot) && slot * alle - vor * 1000 - 1000 > Date.now()) break;
+      slot++;
+    }
     var r = rolle(slot);
     if (!r) return;
-    laden(r);
-    var bis = slot * alle - Date.now();
-    if (bis > 3000) setTimeout(function () { if (window.ZEIT !== 'geschlossen') vorwaermen(); }, bis - 2500);
-    geplant = setTimeout(function () {
-      if (window.ZEIT === 'geschlossen') { box.className = 'takeover'; v.pause(); naechster(); return; }
-      abspielen(slot * alle);
-    }, bis);
+    runde(slot * alle - vor * 1000, r);
   }
   v.addEventListener('ended', function () {
     clearInterval(takt);
@@ -442,7 +455,7 @@ setInterval(pruefe, 300000);
     if (typeof zeige === 'function') zeige();
     naechster();
   });
-  if (test) { laden(decodeURIComponent(test[1])); setTimeout(function () { abspielen(Date.now()); }, 1500); return; }
+  if (test) { runde(Date.now() + 1200, decodeURIComponent(test[1])); return; }
   naechster();
 })();
 </script></body></html>
