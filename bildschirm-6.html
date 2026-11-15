@@ -400,8 +400,27 @@ setInterval(pruefe, 300000);
   function jetzt() { return geraet() + versatz + fein; }
   function spaeter(f, ms) { uhren.push(setTimeout(f, Math.max(0, ms))); }
   function aufraeumen() { while (uhren.length) clearTimeout(uhren.pop()); clearInterval(takt); }
+  // Vorab laden (Firas 15.11.2026: „Ja, mach das“): Die Selbstmessung zeigte Aussetzer, wenn ein Bildschirm während
+  // der Runde nachladen musste (einzelne Bilder bis 6 s hinter dem Plan, bis zur Hälfte der Bilder fehlte). Darum
+  // lädt die Seite ihre Burger-Videos beim Start einmal ganz in den Speicher (Blob) und spielt sie von dort.
+  // Klappt das nicht, spielt sie wie bisher aus dem Netz und versucht es alle 60 s erneut.
+  var blobs = {};
+  function holen(r, danach) {
+    var url = box.getAttribute('data-' + r);
+    if (!url || blobs[r] || !window.fetch || !window.URL || !URL.createObjectURL) { danach(); return; }
+    fetch(url).then(function (a) { if (!a.ok) throw new Error('HTTP ' + a.status); return a.blob(); })
+      .then(function (b) { blobs[r] = URL.createObjectURL(b); danach(); })
+      ['catch'](function () { danach(); setTimeout(function () { holen(r, function () {}); }, 60000); });
+  }
+  function vorladen(fertig) {
+    var rollen = plan.filter(function (r, i) { return r && plan.indexOf(r) === i; }), offen = rollen.length, ende = false;
+    function gemeldet() { if (!ende) { ende = true; clearTimeout(wache); fertig(); } }
+    var wache = setTimeout(gemeldet, 60000);
+    if (!offen) { gemeldet(); return; }
+    rollen.forEach(function (r) { holen(r, function () { if (--offen <= 0) gemeldet(); }); });
+  }
   function laden(r) {
-    var src = r ? box.getAttribute('data-' + r) : '';
+    var src = r ? (blobs[r] || box.getAttribute('data-' + r)) : '';
     if (src && v.getAttribute('src') !== src) { v.setAttribute('src', src); try { v.load(); } catch (e) {} }
   }
   function rolle(slot) { return plan[((slot % plan.length) + plan.length) % plan.length] || ''; }
@@ -518,7 +537,8 @@ setInterval(pruefe, 300000);
       'v=' + Math.round(versatz), 'vn=' + uhrInfo.n, 'vs=' + uhrInfo.streu, 'rtt=' + uhrInfo.rtt, 'f=' + fein,
       'm=' + q(0.5), 'p10=' + q(0.1), 'p90=' + q(0.9), 'min=' + (w.length ? w[0] : ''), 'max=' + (w.length ? w[w.length - 1] : ''),
       'n=' + w.length, 'x=' + m.x, 'j=' + spruenge, 'sp=' + Math.round(sprung * 1000),
-      'pn=' + (uhrInfo.pn || 0), 'pa=' + (uhrInfo.pa || 0), 'az=' + (uhrInfo.az || 0), 'h=' + location.host, 'ver=6'].join(';');
+      'pn=' + (uhrInfo.pn || 0), 'pa=' + (uhrInfo.pa || 0), 'az=' + (uhrInfo.az || 0),
+      'bl=' + (/^blob:/.test(v.getAttribute('src') || '') ? 1 : 0), 'h=' + location.host, 'ver=7'].join(';');
     var daten = messFeld + '=' + encodeURIComponent(text);
     try {
       if (navigator.sendBeacon && navigator.sendBeacon(messUrl, new Blob([daten], { type: 'application/x-www-form-urlencoded' }))) return;
@@ -576,8 +596,8 @@ setInterval(pruefe, 300000);
     if (typeof zeige === 'function') zeige();
     naechster();
   });
-  if (test) { runde(jetzt() + 1200, decodeURIComponent(test[1])); return; }
-  uhrAbgleich(naechster);
-  spaeterAbgleich();
+  // Erst die Videos laden, dann die Uhr abgleichen: So stören die großen Downloads die Laufzeit-Proben nicht.
+  if (test) { vorladen(function () { runde(jetzt() + 1200, decodeURIComponent(test[1])); }); return; }
+  vorladen(function () { uhrAbgleich(naechster); spaeterAbgleich(); });
 })();
 </script></body></html>
