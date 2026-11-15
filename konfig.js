@@ -14,5 +14,9 @@ window.KONFIG = {
   takeover_alle: 120,
   // Feinkorrektur je Bildschirm in Millisekunden (Firas 15.11.2026): positiv = dieser Bildschirm zeigt den Burger
   // früher, negativ = später. 0 = keine Korrektur. Nur nach einer Messung ändern (Handyvideo einer Runde).
-  takeover_feinkorrektur: { "5": 0, "6": 0, "7": 0 }
+  takeover_feinkorrektur: { "5": 0, "6": 0, "7": 0 },
+  // Selbstmessung (Firas 15.11.2026): Nach jeder Burger-Runde schicken Bildschirm 5, 6, 7 ihre Messwerte an dieses
+  // Google-Formular („Two Bros – Bildschirm-Messung“). Leer lassen = keine Messung.
+  takeover_messung: "https://docs.google.com/forms/d/e/1FAIpQLSc8BYu9IzasiSxCOiT9iC-O7CLAGsYvEaGgeUq7INClbO9k9w/formResponse",
+  takeover_messfeld: "entry.678816141"
 };

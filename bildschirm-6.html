@@ -392,6 +392,10 @@ setInterval(pruefe, 300000);
   // Bildschirm zeigt den Burger früher, negativ = später. Für Rest-Versatz, den der Uhr-Abgleich nicht erfasst.
   var fein = parseFloat((K.takeover_feinkorrektur || {})[box.getAttribute('data-nr')]) || 0;
   var uhren = [], takt = null, sichtbarAb = 0, sprung = 0.3, sprungStart = 0, versatz = 0;
+  // Selbstmessung (Firas 15.11.2026: „Selbstmessung“): Nach jeder Runde schickt die Seite ihre Messwerte an ein
+  // Google-Formular (konfig.js: takeover_messung, takeover_messfeld). Leer = keine Messung.
+  var messUrl = K.takeover_messung || '', messFeld = K.takeover_messfeld || '';
+  var uhrInfo = { n: 0, streu: 0, rtt: 0 }, aktNull0 = 0, aktRolle = '', spruenge = 0, mess = null;
   function geraet() { return Date.now() + schief; }
   function jetzt() { return geraet() + versatz + fein; }
   function spaeter(f, ms) { uhren.push(setTimeout(f, Math.max(0, ms))); }
@@ -420,6 +424,8 @@ setInterval(pruefe, 300000);
         w.sort(function (x, y) { return x - y; });
         versatz = w[Math.floor(w.length / 2)];
         window.UHR_VERSATZ = Math.round(versatz);
+        var lauf = proben.map(function (p) { return p.rtt; }).sort(function (x, y) { return x - y; });
+        uhrInfo = { n: w.length, streu: Math.round(w[w.length - 1] - w[0]), rtt: Math.round(lauf[Math.floor(lauf.length / 2)] || 0) };
       }
       if (fertig) fertig();
     }
@@ -430,7 +436,7 @@ setInterval(pruefe, 300000);
         if (da || x.readyState < 2) return;
         da = true;
         var t1 = geraet(), s = Date.parse(x.getResponseHeader('Date') || '');
-        if (!isNaN(s) && t1 - t0 < 250) proben.push({ m: (t0 + t1) / 2, s: s });
+        if (!isNaN(s) && t1 - t0 < 250) proben.push({ m: (t0 + t1) / 2, s: s, rtt: t1 - t0 });
       };
       try { x.open('HEAD', 'stand.txt?u=' + t0, true); x.send(); } catch (e) {}
       if (++n < 45) setTimeout(probe, 60); else setTimeout(abschluss, 800);
@@ -456,6 +462,7 @@ setInterval(pruefe, 300000);
       var unsichtbar = t < sichtbarAb - 250;
       if (unsichtbar ? Math.abs(diff) > 0.05 : Math.abs(diff) > 1.5) {
         sprungStart = t;
+        spruenge++;
         v.playbackRate = 1;
         try { v.currentTime = Math.max(0, soll + Math.min(1.5, sprung)); } catch (e) {}
         return;
@@ -465,7 +472,50 @@ setInterval(pruefe, 300000);
       if (Math.abs(v.playbackRate - rate) > 0.01) v.playbackRate = rate;
     }, 200);
   }
+  // Messung: requestVideoFrameCallback meldet jedes gezeigte Bild mit Videozeit und Anzeigezeit. Daraus die
+  // Abweichung zum gemeinsamen Plan in ms (Server-Uhr): d = Videozeit − (Anzeige + Versatz − null0). Soll = fein.
+  function messStart() {
+    mess = { w: [], x: 0, letzte: -1 };
+    if (!v.requestVideoFrameCallback) return;
+    var m = mess;
+    function bild(jetztMs, md) {
+      if (mess !== m) return;
+      if (/ an/.test(box.className)) {
+        var anzeige = Date.now() - performance.now() + md.expectedDisplayTime + schief;
+        m.w.push(Math.round((md.mediaTime - (anzeige + versatz - aktNull0) / 1000) * 1000));
+        if (m.letzte >= 0 && md.presentedFrames - m.letzte > 1) m.x += md.presentedFrames - m.letzte - 1;
+        m.letzte = md.presentedFrames;
+      }
+      v.requestVideoFrameCallback(bild);
+    }
+    v.requestVideoFrameCallback(bild);
+  }
+  function messSenden() {
+    var m = mess;
+    mess = null;
+    if (!m || !messUrl || !messFeld) return;
+    var w = m.w.slice().sort(function (a, b) { return a - b; });
+    function q(p) { return w.length ? w[Math.min(w.length - 1, Math.floor(p * w.length))] : ''; }
+    var text = ['b=' + box.getAttribute('data-nr'), 'r=' + aktRolle, 'start=' + Math.round((aktNull0 + vor * 1000) / 1000),
+      'v=' + Math.round(versatz), 'vn=' + uhrInfo.n, 'vs=' + uhrInfo.streu, 'rtt=' + uhrInfo.rtt, 'f=' + fein,
+      'm=' + q(0.5), 'p10=' + q(0.1), 'p90=' + q(0.9), 'min=' + (w.length ? w[0] : ''), 'max=' + (w.length ? w[w.length - 1] : ''),
+      'n=' + w.length, 'x=' + m.x, 'j=' + spruenge, 'sp=' + Math.round(sprung * 1000), 'h=' + location.host, 'ver=5'].join(';');
+    var daten = messFeld + '=' + encodeURIComponent(text);
+    try {
+      if (navigator.sendBeacon && navigator.sendBeacon(messUrl, new Blob([daten], { type: 'application/x-www-form-urlencoded' }))) return;
+    } catch (e) {}
+    try {
+      var x = new XMLHttpRequest();
+      x.open('POST', messUrl, true);
+      x.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+      x.send(daten);
+    } catch (e) {}
+  }
   function runde(null0, r) {
+    aktNull0 = null0;
+    aktRolle = r;
+    spruenge = 0;
+    mess = null;
     aufraeumen();
     laden(r);
     sichtbarAb = null0 + vor * 1000;
@@ -479,6 +529,7 @@ setInterval(pruefe, 300000);
       if (window.ZEIT === 'geschlossen') return;
       var p = v.play(); if (p && p['catch']) p['catch'](function () {});
       gleichlauf(null0);
+      messStart();
     }, null0 - jetzt());
     spaeter(function () {
       if (window.ZEIT === 'geschlossen') { clearInterval(takt); box.className = 'takeover'; v.pause(); naechster(); return; }
@@ -499,6 +550,7 @@ setInterval(pruefe, 300000);
     runde(slot * alle - vor * 1000, r);
   }
   v.addEventListener('ended', function () {
+    messSenden();
     clearInterval(takt);
     v.playbackRate = 1;
     box.className = 'takeover';
