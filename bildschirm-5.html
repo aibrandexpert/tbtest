@@ -21,6 +21,7 @@ html,body{margin:0;padding:0;width:1080px;height:1920px;overflow:hidden;backgrou
 .takeover{position:absolute;left:0;top:0;width:1080px;height:1920px;z-index:100;background:#000;
   opacity:0;visibility:hidden;transition:opacity .4s,visibility 0s linear .4s}
 .takeover.an{opacity:1;visibility:visible;transition:opacity .4s}
+.takeover.warm{opacity:.01;visibility:visible;transition:none}
 .takeover video{display:block;width:1080px;height:1920px;object-fit:cover}
 html.render .takeover{display:none}
 .zu{background:var(--grill);color:var(--brioche);align-items:center;justify-content:center;text-align:center;padding:0 70px}
@@ -389,15 +390,35 @@ setInterval(pruefe, 300000);
     if (src && v.getAttribute('src') !== src) { v.setAttribute('src', src); try { v.load(); } catch (e) {} }
   }
   function rolle(slot) { return plan[((slot % plan.length) + plan.length) % plan.length] || ''; }
-  function abspielen(beginn) {
-    box.className = 'takeover an';
-    if (typeof zeige === 'function') zeige();
+  // Gleichlauf, Fassung 2 (15.11.2026): Am Gerät brauchte ein Sprung (currentTime) bis zu 1 s und kam dadurch
+  // zu spät. Jetzt: 2,5 s vorher unsichtbar anlaufen lassen (Decoder warm), dann ohne Sprung starten und
+  // kleine Abweichungen über die Abspielgeschwindigkeit ausgleichen (höchstens 25 % schneller, 20 % langsamer).
+  var takt = null, warm = null;
+  function vorwaermen() {
+    box.className = 'takeover warm';
     try { v.currentTime = 0; } catch (e) {}
     var p = v.play(); if (p && p['catch']) p['catch'](function () {});
-    setTimeout(function () {
-      var soll = (Date.now() - beginn) / 1000;
-      if (soll > 0 && soll < 3 && Math.abs(v.currentTime - soll) > 0.08) { try { v.currentTime = soll; } catch (e) {} }
-    }, 500);
+    warm = setTimeout(function () { v.pause(); try { v.currentTime = 0; } catch (e) {} }, 800);
+  }
+  function gleichlauf(beginn) {
+    clearInterval(takt);
+    takt = setInterval(function () {
+      if (v.paused || v.ended) return;
+      var diff = (Date.now() - beginn) / 1000 - v.currentTime, rate = 1;
+      if (diff > 1.5 || diff < -1.5) { try { v.currentTime = Math.max(0, (Date.now() - beginn) / 1000); } catch (e) {} }
+      else if (diff > 0.04) rate = 1 + Math.min(0.25, diff);
+      else if (diff < -0.04) rate = 1 - Math.min(0.2, -diff);
+      if (Math.abs(v.playbackRate - rate) > 0.01) v.playbackRate = rate;
+    }, 250);
+  }
+  function abspielen(beginn) {
+    clearTimeout(warm);
+    box.className = 'takeover an';
+    if (typeof zeige === 'function') zeige();
+    if (v.currentTime > 0.3) { try { v.currentTime = 0; } catch (e) {} }
+    v.playbackRate = 1;
+    var p = v.play(); if (p && p['catch']) p['catch'](function () {});
+    gleichlauf(beginn);
   }
   function naechster() {
     clearTimeout(geplant);
@@ -407,12 +428,16 @@ setInterval(pruefe, 300000);
     var r = rolle(slot);
     if (!r) return;
     laden(r);
+    var bis = slot * alle - Date.now();
+    if (bis > 3000) setTimeout(function () { if (window.ZEIT !== 'geschlossen') vorwaermen(); }, bis - 2500);
     geplant = setTimeout(function () {
-      if (window.ZEIT === 'geschlossen') { naechster(); return; }
+      if (window.ZEIT === 'geschlossen') { box.className = 'takeover'; v.pause(); naechster(); return; }
       abspielen(slot * alle);
-    }, slot * alle - Date.now());
+    }, bis);
   }
   v.addEventListener('ended', function () {
+    clearInterval(takt);
+    v.playbackRate = 1;
     box.className = 'takeover';
     if (typeof zeige === 'function') zeige();
     naechster();
