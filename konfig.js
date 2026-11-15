@@ -11,5 +11,8 @@ window.KONFIG = {
   geschlossen_bis: "05:00",
   wieder_ab: "10 Uhr",
   // Burger über zwei Bildschirme (Firas 15.11.2026): alle so viele Sekunden, abwechselnd 5+6 und 6+7. 0 = aus.
-  takeover_alle: 120
+  takeover_alle: 120,
+  // Feinkorrektur je Bildschirm in Millisekunden (Firas 15.11.2026): positiv = dieser Bildschirm zeigt den Burger
+  // früher, negativ = später. 0 = keine Korrektur. Nur nach einer Messung ändern (Handyvideo einer Runde).
+  takeover_feinkorrektur: { "5": 0, "6": 0, "7": 0 }
 };
