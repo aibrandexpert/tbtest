@@ -18,6 +18,11 @@ html,body{margin:0;padding:0;width:1080px;height:1920px;overflow:hidden;backgrou
 .video-oben{position:absolute;z-index:2;top:52px;left:60px;right:60px;display:flex;align-items:center;justify-content:space-between}
 .video-oben img{height:76px;width:auto;display:block}
 [hidden]{display:none!important}
+.takeover{position:absolute;left:0;top:0;width:1080px;height:1920px;z-index:100;background:#000;
+  opacity:0;visibility:hidden;transition:opacity .4s,visibility 0s linear .4s}
+.takeover.an{opacity:1;visibility:visible;transition:opacity .4s}
+.takeover video{display:block;width:1080px;height:1920px;object-fit:cover}
+html.render .takeover{display:none}
 .zu{background:var(--grill);color:var(--brioche);align-items:center;justify-content:center;text-align:center;padding:0 70px}
 .zu img{height:150px;width:auto;display:block;margin:0 0 110px}
 .zu .vor{font:600 66px/1.1 'Barlow',sans-serif;margin:0}
@@ -101,7 +106,7 @@ html.render .titel.frei{margin:0;padding:24px 60px 0;background:var(--bg)}
 <div class="video"><video src="video/menues-ruhig.mp4?v=530e0ccf" class="still" autoplay muted loop playsinline preload="auto"></video><div class="video-oben"><img src="logo/tb_brioche.png" alt="Two Bro's"><div class="rechts"></div></div><h1 class="titel">Menüs</h1></div>
 <div class="inhalt"><div class="gruppen"><section class="gruppe" data-gruppe="Mach’s zum Menü"><div class="gkopf"><h2 class="gtitel">Mach’s zum Menü</h2></div><div class="eintraege"><div class="eintrag"><div class="zeile"><span class="name"><span class="z">Beilage und Getränk dazu</span></span><span class="preise"><span class="preis breit">je −1,00</span></span></div><div class="text"><span class="z">Im Menü kostet jede Beilage und jeder Softdrink 1,00 weniger.</span></div></div></div></section><section class="gruppe" data-gruppe="Für Kinder"><div class="gkopf"><h2 class="gtitel">Für Kinder</h2></div><div class="eintraege"><div class="eintrag"><div class="zeile"><span class="name"><span class="z">Kinder-Burger-Menü</span></span><span class="preise"><span class="preis">14,50</span></span></div><div class="text"><span class="z">Kinder-Burger</span>, <span class="z">Pommes mit Ketchup oder Mayo</span>, <span class="z">Fruchtsaftgetränk</span>, <span class="z">ein Spielzeug</span></div></div><div class="eintrag"><div class="zeile"><span class="name"><span class="z">Kinder-Burger</span></span><span class="preise"><span class="preis">8,50</span></span></div><div class="text"><span class="z">Rinder-Patty 80 g</span>, <span class="z">Salat</span>, <span class="z">Tomate</span>, <span class="z">Zwiebeln</span>, <span class="z">Essiggurken</span>, <span class="z">Burger-Sauce</span></div></div></div></section><section class="gruppe" data-gruppe="Extra drauf"><div class="gkopf"><h2 class="gtitel">Extra drauf</h2></div><div class="eintraege"><div class="eintrag"><div class="zeile"><span class="name"><span class="z">Crazy Toppings</span></span><span class="preise"><span class="preis breit">+2,50</span></span></div><div class="text"><span class="z">Gebratene Zwiebeln</span>, <span class="z">Coleslaw</span>, <span class="z">Champignons</span>, <span class="z">Jalapeños</span>, <span class="z">Rinderschinken</span>, <span class="z">Cheese-Sauce</span>, <span class="z">Sucuk oder Ei</span></div></div></div></section><section class="gruppe raster2" data-gruppe="Saucen"><div class="gkopf"><h2 class="gtitel">Saucen</h2></div><div class="eintraege"><div class="eintrag"><div class="zeile"><span class="name"><span class="z">Ketchup</span></span><span class="preise"><span class="preis">0,90</span></span></div></div><div class="eintrag"><div class="zeile"><span class="name"><span class="z">Mayonnaise</span></span><span class="preise"><span class="preis">0,90</span></span></div></div><div class="eintrag"><div class="zeile"><span class="name"><span class="z">Burger-Sauce</span></span><span class="preise"><span class="preis">0,90</span></span></div></div><div class="eintrag"><div class="zeile"><span class="name"><span class="z">Hot BBQ</span></span><span class="preise"><span class="preis">0,90</span></span></div></div><div class="eintrag"><div class="zeile"><span class="name"><span class="z">Knoblauch</span></span><span class="preise"><span class="preis">0,90</span></span></div></div><div class="eintrag"><div class="zeile"><span class="name"><span class="z">Sour Cream</span></span><span class="preise"><span class="preis">0,90</span></span></div></div><div class="eintrag"><div class="zeile"><span class="name"><span class="z">Curry-Mango</span></span><span class="preise"><span class="preis">1,20</span></span></div></div><div class="eintrag"><div class="zeile"><span class="name"><span class="z">Honig-Senf</span></span><span class="preise"><span class="preis">1,20</span></span></div></div><div class="eintrag"><div class="zeile"><span class="name"><span class="z">Tahini-Lemon</span></span><span class="preise"><span class="preis">1,20</span></span></div><div class="text"><span class="tag vegan">vegan</span></div></div><div class="eintrag"><div class="zeile"><span class="name"><span class="z">Soja-Joghurt</span></span><span class="preise"><span class="preis">1,20</span></span></div><div class="text"><span class="tag vegan">vegan</span></div></div><div class="eintrag"><div class="zeile"><span class="name"><span class="z">Avocado</span></span><span class="preise"><span class="preis">1,50</span></span></div></div><div class="eintrag"><div class="zeile"><span class="name"><span class="z">Cheese</span></span><span class="preise"><span class="preis">1,90</span></span></div></div></div></section><section class="gruppe" data-gruppe="Two Bro’s Karte"><div class="gkopf"><h2 class="gtitel">Two Bro’s Karte</h2></div><div class="eintraege"><div class="eintrag"><div class="zeile"><span class="name"><span class="z">Punkte sammeln</span></span><span class="preise"></span></div><div class="text"><span class="z">Bei jedem Einkauf. Frag an der Kasse nach deiner Karte.</span></div></div></div></section></div><footer class="fuss"><div class="reihe"><span>Alle Preise in Euro</span></div></footer></div>
 
-</main><main class="screen zu" data-zeit="geschlossen" hidden><img src="logo/tb_brioche.png" alt="Two Bro's"><p class="vor">Für heute haben wir</p><h1>geschlossen</h1><p class="danke">Danke für deinen Besuch!</p><p class="wieder">Ab 10 Uhr sind wir wieder für dich da.</p></main><script>
+</main><main class="screen zu" data-zeit="geschlossen" hidden><img src="logo/tb_brioche.png" alt="Two Bro's"><p class="vor">Für heute haben wir</p><h1>geschlossen</h1><p class="danke">Danke für deinen Besuch!</p><p class="wieder">Ab 10 Uhr sind wir wieder für dich da.</p></main><div class="takeover" data-plan=",rechts" data-links="video/takeover-links.mp4?v=fcf9d593" data-rechts="video/takeover-rechts.mp4?v=70490818"><video muted playsinline preload="auto"></video></div><script>
 (function () {
   var treffer = /[?&]drehen=([^&]*)/.exec(location.search), drehen = treffer ? decodeURIComponent(treffer[1]) : null;
   function einpassen() {
@@ -162,12 +167,15 @@ function zeige() {
   if (q.tag && TAGE.indexOf(q.tag) >= 0) tag = TAGE.indexOf(q.tag);
   var zeit = q.zeit || (geschlossen(jetzt, tag) ? 'geschlossen'
                         : jetzt < (K.fruehstueck_bis || '12:00') ? 'morgens' : 'mittag');
+  window.ZEIT = zeit;
+  // Läuft gerade der Burger über zwei Bildschirme, bleibt das Karten-Video aus (nur ein Video zur Zeit).
+  var takeover = !!document.querySelector('.takeover.an');
   for (var i = 0; i < seiten.length; i++) {
     var m = seiten[i], mz = m.getAttribute('data-zeit'), v = m.querySelector('video');
     var an = zeit === 'geschlossen' ? mz === 'geschlossen' : mz !== 'geschlossen' && (!mz || mz === zeit);
     m.hidden = !an;
     if (v) {
-      if (an) { var p = v.play(); if (p && p['catch']) p['catch'](function () {}); }
+      if (an && !takeover) { var p = v.play(); if (p && p['catch']) p['catch'](function () {}); }
       else v.pause();
     }
   }
@@ -368,5 +376,48 @@ setInterval(pruefe, 300000);
   }
   if (document.fonts && document.fonts.ready) document.fonts.ready.then(start);
   else window.addEventListener('load', start);
+})();
+</script><script>
+(function () {
+  var box = document.querySelector('.takeover');
+  if (!box) return;
+  var K = window.KONFIG || {}, alleS = K.takeover_alle === undefined ? 120 : K.takeover_alle;
+  var v = box.querySelector('video'), plan = (box.getAttribute('data-plan') || '').split(',');
+  var test = /[?&]takeover=([^&]*)/.exec(location.search), geplant = null;
+  function laden(r) {
+    var src = r ? box.getAttribute('data-' + r) : '';
+    if (src && v.getAttribute('src') !== src) { v.setAttribute('src', src); try { v.load(); } catch (e) {} }
+  }
+  function rolle(slot) { return plan[((slot % plan.length) + plan.length) % plan.length] || ''; }
+  function abspielen(beginn) {
+    box.className = 'takeover an';
+    if (typeof zeige === 'function') zeige();
+    try { v.currentTime = 0; } catch (e) {}
+    var p = v.play(); if (p && p['catch']) p['catch'](function () {});
+    setTimeout(function () {
+      var soll = (Date.now() - beginn) / 1000;
+      if (soll > 0 && soll < 3 && Math.abs(v.currentTime - soll) > 0.08) { try { v.currentTime = soll; } catch (e) {} }
+    }, 500);
+  }
+  function naechster() {
+    clearTimeout(geplant);
+    if (!(alleS > 0)) return;
+    var alle = alleS * 1000, slot = Math.floor(Date.now() / alle) + 1;
+    for (var i = 0; i < plan.length && !rolle(slot); i++) slot++;
+    var r = rolle(slot);
+    if (!r) return;
+    laden(r);
+    geplant = setTimeout(function () {
+      if (window.ZEIT === 'geschlossen') { naechster(); return; }
+      abspielen(slot * alle);
+    }, slot * alle - Date.now());
+  }
+  v.addEventListener('ended', function () {
+    box.className = 'takeover';
+    if (typeof zeige === 'function') zeige();
+    naechster();
+  });
+  if (test) { laden(decodeURIComponent(test[1])); setTimeout(function () { abspielen(Date.now()); }, 1500); return; }
+  naechster();
 })();
 </script></body></html>

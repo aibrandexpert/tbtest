@@ -9,5 +9,7 @@ window.KONFIG = {
   tabelle: "https://docs.google.com/spreadsheets/d/e/2PACX-1vSZxdx-b_IwZjBlvgZHEKLtwPD20ka2c7RRQpe37mM2-GRlQ4lhbilFyFZ5YaP11nsNXXzf9g03ifq5/pub?gid=707678712&single=true&output=csv",
   geschlossen_ab: { "so": "21:00", "mo": "21:00", "di": "21:00", "mi": "21:00", "do": "21:00", "fr": "22:00", "sa": "22:00" },
   geschlossen_bis: "05:00",
-  wieder_ab: "10 Uhr"
+  wieder_ab: "10 Uhr",
+  // Burger über zwei Bildschirme (Firas 15.11.2026): alle so viele Sekunden, abwechselnd 5+6 und 6+7. 0 = aus.
+  takeover_alle: 120
 };

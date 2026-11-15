@@ -18,6 +18,11 @@ html,body{margin:0;padding:0;width:1080px;height:1920px;overflow:hidden;backgrou
 .video-oben{position:absolute;z-index:2;top:52px;left:60px;right:60px;display:flex;align-items:center;justify-content:space-between}
 .video-oben img{height:76px;width:auto;display:block}
 [hidden]{display:none!important}
+.takeover{position:absolute;left:0;top:0;width:1080px;height:1920px;z-index:100;background:#000;
+  opacity:0;visibility:hidden;transition:opacity .4s,visibility 0s linear .4s}
+.takeover.an{opacity:1;visibility:visible;transition:opacity .4s}
+.takeover video{display:block;width:1080px;height:1920px;object-fit:cover}
+html.render .takeover{display:none}
 .zu{background:var(--grill);color:var(--brioche);align-items:center;justify-content:center;text-align:center;padding:0 70px}
 .zu img{height:150px;width:auto;display:block;margin:0 0 110px}
 .zu .vor{font:600 66px/1.1 'Barlow',sans-serif;margin:0}
@@ -162,12 +167,15 @@ function zeige() {
   if (q.tag && TAGE.indexOf(q.tag) >= 0) tag = TAGE.indexOf(q.tag);
   var zeit = q.zeit || (geschlossen(jetzt, tag) ? 'geschlossen'
                         : jetzt < (K.fruehstueck_bis || '12:00') ? 'morgens' : 'mittag');
+  window.ZEIT = zeit;
+  // Läuft gerade der Burger über zwei Bildschirme, bleibt das Karten-Video aus (nur ein Video zur Zeit).
+  var takeover = !!document.querySelector('.takeover.an');
   for (var i = 0; i < seiten.length; i++) {
     var m = seiten[i], mz = m.getAttribute('data-zeit'), v = m.querySelector('video');
     var an = zeit === 'geschlossen' ? mz === 'geschlossen' : mz !== 'geschlossen' && (!mz || mz === zeit);
     m.hidden = !an;
     if (v) {
-      if (an) { var p = v.play(); if (p && p['catch']) p['catch'](function () {}); }
+      if (an && !takeover) { var p = v.play(); if (p && p['catch']) p['catch'](function () {}); }
       else v.pause();
     }
   }
