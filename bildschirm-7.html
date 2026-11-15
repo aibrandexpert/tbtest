@@ -386,7 +386,11 @@ setInterval(pruefe, 300000);
   var v = box.querySelector('video'), plan = (box.getAttribute('data-plan') || '').split(',');
   var vor = parseFloat(box.getAttribute('data-vorlauf')) || 0;
   var test = /[?&]takeover=([^&]*)/.exec(location.search);
-  var uhren = [], takt = null, sichtbarAb = 0, sprung = 0.3, sprungStart = 0;
+  // Zum Testen eine falsch gehende Geräte-Uhr vorgeben: ?uhrtest=500 (ms vor).
+  var schief = parseFloat((/[?&]uhrtest=([-\d.]+)/.exec(location.search) || [])[1]) || 0;
+  var uhren = [], takt = null, sichtbarAb = 0, sprung = 0.3, sprungStart = 0, versatz = 0;
+  function geraet() { return Date.now() + schief; }
+  function jetzt() { return geraet() + versatz; }
   function spaeter(f, ms) { uhren.push(setTimeout(f, Math.max(0, ms))); }
   function aufraeumen() { while (uhren.length) clearTimeout(uhren.pop()); clearInterval(takt); }
   function laden(r) {
@@ -394,18 +398,61 @@ setInterval(pruefe, 300000);
     if (src && v.getAttribute('src') !== src) { v.setAttribute('src', src); try { v.load(); } catch (e) {} }
   }
   function rolle(slot) { return plan[((slot % plan.length) + plan.length) % plan.length] || ''; }
+  // Uhr-Abgleich (Fassung 4, 15.11.2026): Android stellt die Uhr erst ab 5 s Abweichung nach; Bildschirm 7 ging
+  // 0,5 s nach. Darum misst jede Seite den Versatz zur Server-Uhr selbst: 45 HEAD-Anfragen im Abstand von 60 ms,
+  // der Date-Kopf springt jede volle Sekunde; der Sprung liegt zwischen zwei Anfragen (Mitte = Hin- und Rückweg / 2).
+  // Median über die Sprünge, am Mac auf etwa 0,01 s genau gemessen. Danach alle 10 Minuten neu.
+  function uhrAbgleich(fertig) {
+    var proben = [], n = 0, ende = false;
+    function abschluss() {
+      if (ende) return;
+      ende = true;
+      proben.sort(function (x, y) { return x.m - y.m; });
+      var w = [];
+      for (var i = 1; i < proben.length; i++) {
+        if (proben[i].s === proben[i - 1].s + 1000 && proben[i].m - proben[i - 1].m < 250)
+          w.push(proben[i].s - (proben[i].m + proben[i - 1].m) / 2);
+      }
+      if (w.length >= 2) {
+        w.sort(function (x, y) { return x - y; });
+        versatz = w[Math.floor(w.length / 2)];
+        window.UHR_VERSATZ = Math.round(versatz);
+      }
+      if (fertig) fertig();
+    }
+    function probe() {
+      if (ende) return;
+      var x = new XMLHttpRequest(), t0 = geraet(), da = false;
+      x.onreadystatechange = function () {
+        if (da || x.readyState < 2) return;
+        da = true;
+        var t1 = geraet(), s = Date.parse(x.getResponseHeader('Date') || '');
+        if (!isNaN(s) && t1 - t0 < 250) proben.push({ m: (t0 + t1) / 2, s: s });
+      };
+      try { x.open('HEAD', 'stand.txt?u=' + t0, true); x.send(); } catch (e) {}
+      if (++n < 45) setTimeout(probe, 60); else setTimeout(abschluss, 800);
+    }
+    probe();
+  }
+  function spaeterAbgleich() {
+    setTimeout(function () {
+      if (/warm|an/.test(box.className)) { setTimeout(spaeterAbgleich, 30000); return; }
+      uhrAbgleich(function () { if (!/warm|an/.test(box.className)) naechster(); });
+      spaeterAbgleich();
+    }, 600000);
+  }
   v.addEventListener('seeked', function () {
-    if (sprungStart) { sprung = 0.3 * sprung + 0.7 * (Date.now() - sprungStart) / 1000; sprungStart = 0; }
+    if (sprungStart) { sprung = 0.3 * sprung + 0.7 * (jetzt() - sprungStart) / 1000; sprungStart = 0; }
   });
-  // null0 = Uhrzeit (ms), zu der das Video bei 0 stehen soll.
+  // null0 = Zeit (ms, Server-Uhr), zu der das Video bei 0 stehen soll.
   function gleichlauf(null0) {
     clearInterval(takt);
     takt = setInterval(function () {
       if (v.paused || v.ended || v.seeking) return;
-      var jetzt = Date.now(), soll = (jetzt - null0) / 1000, diff = soll - v.currentTime, rate = 1;
-      var unsichtbar = jetzt < sichtbarAb - 250;
+      var t = jetzt(), soll = (t - null0) / 1000, diff = soll - v.currentTime, rate = 1;
+      var unsichtbar = t < sichtbarAb - 250;
       if (unsichtbar ? Math.abs(diff) > 0.05 : Math.abs(diff) > 1.5) {
-        sprungStart = jetzt;
+        sprungStart = t;
         v.playbackRate = 1;
         try { v.currentTime = Math.max(0, soll + Math.min(1.5, sprung)); } catch (e) {}
         return;
@@ -424,24 +471,24 @@ setInterval(pruefe, 300000);
       box.className = 'takeover warm';
       v.playbackRate = 1;
       try { v.currentTime = 0; } catch (e) {}
-    }, null0 - 700 - Date.now());
+    }, null0 - 700 - jetzt());
     spaeter(function () {
       if (window.ZEIT === 'geschlossen') return;
       var p = v.play(); if (p && p['catch']) p['catch'](function () {});
       gleichlauf(null0);
-    }, null0 - Date.now());
+    }, null0 - jetzt());
     spaeter(function () {
       if (window.ZEIT === 'geschlossen') { clearInterval(takt); box.className = 'takeover'; v.pause(); naechster(); return; }
       box.className = 'takeover an';
       if (typeof zeige === 'function') zeige();
-    }, sichtbarAb - Date.now());
+    }, sichtbarAb - jetzt());
   }
   function naechster() {
     aufraeumen();
     if (!(alleS > 0)) return;
-    var alle = alleS * 1000, slot = Math.floor(Date.now() / alle) + 1;
+    var alle = alleS * 1000, slot = Math.floor(jetzt() / alle) + 1;
     for (var i = 0; i < 2 * plan.length; i++) {
-      if (rolle(slot) && slot * alle - vor * 1000 - 1000 > Date.now()) break;
+      if (rolle(slot) && slot * alle - vor * 1000 - 1000 > jetzt()) break;
       slot++;
     }
     var r = rolle(slot);
@@ -455,7 +502,8 @@ setInterval(pruefe, 300000);
     if (typeof zeige === 'function') zeige();
     naechster();
   });
-  if (test) { runde(Date.now() + 1200, decodeURIComponent(test[1])); return; }
-  naechster();
+  if (test) { runde(jetzt() + 1200, decodeURIComponent(test[1])); return; }
+  uhrAbgleich(naechster);
+  spaeterAbgleich();
 })();
 </script></body></html>
