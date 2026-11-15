@@ -18,6 +18,12 @@ html,body{margin:0;padding:0;width:1080px;height:1920px;overflow:hidden;backgrou
 .video-oben{position:absolute;z-index:2;top:52px;left:60px;right:60px;display:flex;align-items:center;justify-content:space-between}
 .video-oben img{height:76px;width:auto;display:block}
 [hidden]{display:none!important}
+.zu{background:var(--grill);color:var(--brioche);align-items:center;justify-content:center;text-align:center;padding:0 70px}
+.zu img{height:150px;width:auto;display:block;margin:0 0 110px}
+.zu .vor{font:600 66px/1.1 'Barlow',sans-serif;margin:0}
+.zu h1{font-family:'Big Shoulders Display',sans-serif;font-weight:900;font-size:200px;line-height:.9;margin:14px 0 90px;white-space:nowrap}
+.zu .danke{font:700 64px/1.2 'Barlow',sans-serif;margin:0 0 26px}
+.zu .wieder{font:500 50px/1.3 'Barlow',sans-serif;color:rgba(234,200,144,.72);margin:0}
 html.render,html.render body,html.render .screen,html.render .video{background:transparent!important}
 html.render video{visibility:hidden}
 html.render .inhalt,html.render .kopf{background:var(--bg)}
@@ -87,7 +93,7 @@ html.render .titel.frei{margin:0;padding:24px 60px 0;background:var(--bg)}
 <div class="video"><video src="video/menues-ruhig.mp4?v=530e0ccf" class="still" autoplay muted loop playsinline preload="auto"></video><div class="video-oben"><img src="logo/tb_brioche.png" alt="Two Bro's"><div class="rechts"></div></div><h1 class="titel">Menüs</h1></div>
 <div class="inhalt"><div class="gruppen"><section class="gruppe" data-gruppe="Mach’s zum Menü"><div class="gkopf"><h2 class="gtitel">Mach’s zum Menü</h2></div><div class="eintraege"><div class="eintrag"><div class="zeile"><span class="name"><span class="z">Beilage und Getränk dazu</span></span><span class="preise"><span class="preis breit">je −1,00</span></span></div><div class="text"><span class="z">Im Menü kostet jede Beilage und jeder Softdrink 1,00 weniger.</span></div></div></div></section><section class="gruppe" data-gruppe="Für Kinder"><div class="gkopf"><h2 class="gtitel">Für Kinder</h2></div><div class="eintraege"><div class="eintrag"><div class="zeile"><span class="name"><span class="z">Kinder-Burger-Menü</span></span><span class="preise"><span class="preis">14,50</span></span></div><div class="text"><span class="z">Kinder-Burger</span>, <span class="z">Pommes</span>, <span class="z">Durstlöscher 0,5 l</span>, <span class="z">ein Spielzeug</span></div></div><div class="eintrag"><div class="zeile"><span class="name"><span class="z">Kinder-Burger</span></span><span class="preise"><span class="preis">8,50</span></span></div><div class="text"><span class="z">Rinder-Patty 80 g</span>, <span class="z">Salat</span>, <span class="z">Tomate</span>, <span class="z">Zwiebeln</span>, <span class="z">Essiggurken</span>, <span class="z">Burger-Sauce</span></div></div></div></section><section class="gruppe" data-gruppe="Extra drauf"><div class="gkopf"><h2 class="gtitel">Extra drauf</h2></div><div class="eintraege"><div class="eintrag"><div class="zeile"><span class="name"><span class="z">Crazy Toppings</span></span><span class="preise"><span class="preis breit">+2,50</span></span></div><div class="text"><span class="z">Gebratene Zwiebeln</span>, <span class="z">Coleslaw</span>, <span class="z">Champignons</span>, <span class="z">Jalapeños</span>, <span class="z">Rinderschinken</span>, <span class="z">Cheese-Sauce</span>, <span class="z">Sucuk oder Ei</span></div></div><div class="eintrag"><div class="zeile"><span class="name"><span class="z">Dips</span></span><span class="preise"><span class="preis breit">ab 0,90</span></span></div><div class="text"><span class="z">Ketchup</span>, <span class="z">Mayo</span>, <span class="z">Burger</span>, <span class="z">Hot BBQ</span>, <span class="z">Knoblauch</span>, <span class="z">Sour Cream</span>, <span class="z">Curry-Mango</span>, <span class="z">Honig-Senf und mehr</span></div></div></div></section><section class="gruppe" data-gruppe="Two Bro’s Karte"><div class="gkopf"><h2 class="gtitel">Two Bro’s Karte</h2></div><div class="eintraege"><div class="eintrag"><div class="zeile"><span class="name"><span class="z">Punkte sammeln</span></span><span class="preise"></span></div><div class="text"><span class="z">Bei jedem Einkauf. Frag an der Kasse nach deiner Karte.</span></div></div></div></section></div><footer class="fuss"><div class="reihe"><span>Alle Preise in Euro</span></div></footer></div>
 
-</main><script>
+</main><main class="screen zu" data-zeit="geschlossen" hidden><img src="logo/tb_brioche.png" alt="Two Bro's"><p class="vor">Für heute haben wir</p><h1>geschlossen</h1><p class="danke">Danke für deinen Besuch!</p><p class="wieder">Ab 10 Uhr sind wir wieder für dich da.</p></main><script>
 (function () {
   var treffer = /[?&]drehen=([^&]*)/.exec(location.search), drehen = treffer ? decodeURIComponent(treffer[1]) : null;
   function einpassen() {
@@ -123,16 +129,34 @@ if (q.render) document.documentElement.className += ' render';
 var seiten = Array.prototype.slice.call(document.querySelectorAll('.screen'));
 function zwei(n) { return (n < 10 ? '0' : '') + n; }
 function passe(m) {
-  m.hidden = false;
   var z = m.querySelector('.inhalt'), s = 1;
+  if (!z) return;
+  m.hidden = false;
   while (z.scrollHeight > z.clientHeight + 1 && s > 0.6) { s -= 0.01; m.style.setProperty('--s', s); }
   m.setAttribute('data-scale', s.toFixed(2));
 }
+// Ladenschluss: ab K.geschlossen_ab (je Wochentag) bis K.geschlossen_bis zeigt jede Seite „geschlossen“.
+// Zum Testen: ?uhr=21:05&tag=so (Uhrzeit und Wochentag vorgeben) oder ?zeit=geschlossen.
+var TAGE = ['so', 'mo', 'di', 'mi', 'do', 'fr', 'sa'];
+function geschlossen(jetzt, tag) {
+  var ab = K.geschlossen_ab;
+  if (!ab) return false;
+  var heute = typeof ab === 'string' ? ab : ab[TAGE[tag]];
+  return (!!heute && jetzt >= heute) || jetzt < (K.geschlossen_bis || '05:00');
+}
+if (K.wieder_ab) {
+  var w = document.querySelectorAll('.zu .wieder');
+  for (var j = 0; j < w.length; j++) w[j].textContent = 'Ab ' + K.wieder_ab + ' sind wir wieder für dich da.';
+}
 function zeige() {
-  var d = new Date(), jetzt = zwei(d.getHours()) + ':' + zwei(d.getMinutes());
-  var zeit = q.zeit || (jetzt < (K.fruehstueck_bis || '12:00') ? 'morgens' : 'mittag');
+  var d = new Date(), jetzt = zwei(d.getHours()) + ':' + zwei(d.getMinutes()), tag = d.getDay();
+  if (q.uhr) jetzt = q.uhr;
+  if (q.tag && TAGE.indexOf(q.tag) >= 0) tag = TAGE.indexOf(q.tag);
+  var zeit = q.zeit || (geschlossen(jetzt, tag) ? 'geschlossen'
+                        : jetzt < (K.fruehstueck_bis || '12:00') ? 'morgens' : 'mittag');
   for (var i = 0; i < seiten.length; i++) {
-    var m = seiten[i], mz = m.getAttribute('data-zeit'), an = !mz || mz === zeit, v = m.querySelector('video');
+    var m = seiten[i], mz = m.getAttribute('data-zeit'), v = m.querySelector('video');
+    var an = zeit === 'geschlossen' ? mz === 'geschlossen' : mz !== 'geschlossen' && (!mz || mz === zeit);
     m.hidden = !an;
     if (v) {
       if (an) { var p = v.play(); if (p && p['catch']) p['catch'](function () {}); }
