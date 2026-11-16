@@ -24,6 +24,30 @@ html,body{margin:0;padding:0;width:1080px;height:1920px;overflow:hidden;backgrou
 .takeover.warm{opacity:.01;visibility:visible;transition:none}
 .takeover video{display:block;width:1080px;height:1920px;object-fit:cover}
 html.render .takeover{display:none}
+.angebot{position:absolute;left:0;top:0;width:1080px;height:1920px;z-index:90;overflow:hidden;background:#141413;
+  color:var(--brioche);opacity:0;visibility:hidden;transition:opacity .8s,visibility 0s linear .8s}
+.angebot.an{opacity:1;visibility:visible;transition:opacity .8s}
+.a-video,.a-video video{position:absolute;left:0;top:0;width:1080px;height:1920px;display:block}
+.a-video video{object-fit:cover}
+.a-oben{position:absolute;left:0;top:0;width:1080px;height:520px;background:linear-gradient(rgba(20,20,19,.9),rgba(20,20,19,0))}
+.a-unten{position:absolute;left:0;bottom:0;width:1080px;height:820px;
+  background:linear-gradient(rgba(20,20,19,0),rgba(20,20,19,.92) 40%)}
+.a-rahmen{position:absolute;left:26px;top:26px;right:26px;bottom:26px;border:3px solid rgba(234,200,144,.7);border-radius:30px}
+.a-kopf{position:absolute;left:0;top:92px;width:1080px;display:flex;flex-direction:column;align-items:center}
+.a-kopf img{height:84px;width:auto;display:block;margin:0 0 22px}
+.a-titel{margin:0;font-family:'Big Shoulders Display',sans-serif;font-weight:900;font-size:118px;line-height:.95;
+  text-transform:uppercase;white-space:nowrap;letter-spacing:.02em}
+.a-text{position:absolute;left:0;bottom:118px;width:1080px;display:flex;flex-direction:column;align-items:center;
+  text-align:center;padding:0 60px}
+.a-gericht{margin:0 0 18px;font-family:'Big Shoulders Display',sans-serif;font-weight:900;font-size:128px;line-height:.95;
+  text-transform:uppercase;white-space:nowrap}
+.a-dazu{margin:0;font:600 58px/1.3 'Barlow',sans-serif;color:#F3E6CF}
+.a-preis{margin:38px 0 0;padding:18px 64px 14px;border-radius:26px;background:var(--brioche);color:var(--grill);
+  font-family:'Big Shoulders Display',sans-serif;font-weight:900;font-size:160px;line-height:1;white-space:nowrap}
+html.render .angebot{display:none}
+html.ebene,html.ebene body{background:transparent!important}
+html.ebene .screen,html.ebene .a-video{visibility:hidden}
+html.ebene .angebot{background:transparent}
 .zu{background:var(--grill);color:var(--brioche);align-items:center;justify-content:center;text-align:center;padding:0 70px}
 .zu img{height:150px;width:auto;display:block;margin:0 0 110px}
 .zu .vor{font:600 66px/1.1 'Barlow',sans-serif;margin:0}
@@ -107,7 +131,7 @@ html.render .titel.frei{margin:0;padding:24px 60px 0;background:var(--bg)}
 <div class="video"><video src="video/fingerfood-ruhig.mp4?v=856f1bbc" class="still" autoplay muted loop playsinline preload="auto"></video><div class="video-oben"><img src="logo/tb_brioche.png" alt="Two Bro's"><div class="rechts"></div></div><h1 class="titel">Fingerfood</h1></div>
 <div class="inhalt"><div class="gruppen"><section class="gruppe raster2" data-gruppe="Pommes &amp; Co."><div class="gkopf"><h2 class="gtitel">Pommes &amp; Co.</h2></div><div class="eintraege"><div class="eintrag"><div class="zeile"><span class="name"><span class="z">Pommes</span></span><span class="preise"><span class="preis">5,00</span></span></div><div class="text"><span class="tag vegan">vegan</span></div></div><div class="eintrag"><div class="zeile"><span class="name"><span class="z">Wedges</span></span><span class="preise"><span class="preis">5,50</span></span></div><div class="text"><span class="tag vegan">vegan</span><span class="z">Country Potatoes</span></div></div><div class="eintrag"><div class="zeile"><span class="name"><span class="z">Curly Fries</span></span><span class="preise"><span class="preis">5,50</span></span></div><div class="text"><span class="tag vegan">vegan</span><span class="z">Lockenpommes</span></div></div><div class="eintrag"><div class="zeile"><span class="name"><span class="z">Sweet Potatoes</span></span><span class="preise"><span class="preis">6,50</span></span></div><div class="text"><span class="tag vegan">vegan</span><span class="z">Süßkartoffel-Pommes</span></div></div><div class="eintrag"><div class="zeile"><span class="name"><span class="z">Potatoes Mix</span></span><span class="preise"><span class="preis">5,50</span></span></div><div class="text"><span class="z">Pommes</span>, <span class="z">Wedges</span>, <span class="z">Curly Fries</span>, <span class="z">Sweet Potatoes</span></div></div><div class="eintrag"><div class="zeile"><span class="name"><span class="z">Coleslaw</span></span><span class="preise"><span class="preis">5,50</span></span></div><div class="text"><span class="z">Weißkraut-Karotten-Salat</span></div></div></div></section><section class="gruppe raster2" data-gruppe="Snacks"><div class="gkopf"><h2 class="gtitel">Snacks</h2></div><div class="eintraege"><div class="eintrag"><div class="zeile"><span class="name"><span class="z">Chicken Nuggets</span></span><span class="preise"><span class="preis">6,50</span></span></div><div class="text"><span class="z">7 Stück</span>, <span class="z">Hähnchenfilet in Panade</span></div></div><div class="eintrag"><div class="zeile"><span class="name"><span class="z">Mozzarella Sticks</span></span><span class="preise"><span class="preis">5,50</span></span></div><div class="text"><span class="z">6 Stück</span></div></div><div class="eintrag"><div class="zeile"><span class="name"><span class="z">Butterfly Shrimps</span></span><span class="preise"><span class="preis">5,50</span></span></div><div class="text"><span class="z">7 Stück</span></div></div><div class="eintrag"><div class="zeile"><span class="name"><span class="z">Hot Wings</span></span><span class="preise"><span class="preis">7,50</span></span></div><div class="text"><span class="z">5 Stück</span>, <span class="z">pikant gewürzt</span></div></div><div class="eintrag"><div class="zeile"><span class="name"><span class="z">Curry Wurst</span></span><span class="preise"><span class="preis">8,50</span></span></div><div class="text"><span class="z">Brioche Bun</span>, <span class="z">2 × 100 g Rindswurst aus eigener Herstellung</span></div></div></div></section><section class="gruppe raster2" data-gruppe="Zum Teilen"><div class="gkopf"><h2 class="gtitel">Zum Teilen</h2></div><div class="eintraege"><div class="eintrag"><div class="zeile"><span class="name"><span class="z">Hot Wings Bucket</span></span><span class="preise"><span class="preis">18,50</span></span></div><div class="text"><span class="z">13 Hot Wings</span></div></div><div class="eintrag"><div class="zeile"><span class="name"><span class="z">Chicken Mix Bucket</span></span><span class="preise"><span class="preis">17,50</span></span></div><div class="text"><span class="z">7 Hot Wings</span>, <span class="z">9 Chicken Nuggets</span></div></div></div></section></div><footer class="fuss"><div class="reihe"><span>Alle Preise in Euro</span></div></footer></div>
 
-</main><main class="screen zu" data-zeit="geschlossen" hidden><img src="logo/tb_brioche.png" alt="Two Bro's"><p class="vor">Für heute haben wir</p><h1>geschlossen</h1><p class="danke">Danke für deinen Besuch!</p><p class="wieder">Ab 10 Uhr sind wir wieder für dich da.</p></main><div class="takeover" data-nr="6" data-plan="rechts,links" data-vorlauf="3" data-links="video/takeover-links.mp4?v=47e89f0b" data-rechts="video/takeover-rechts.mp4?v=9c341155"><video muted playsinline preload="auto"></video></div><script>
+</main><main class="screen zu" data-zeit="geschlossen" hidden><img src="logo/tb_brioche.png" alt="Two Bro's"><p class="vor">Für heute haben wir</p><h1>geschlossen</h1><p class="danke">Danke für deinen Besuch!</p><p class="wieder">Ab 10 Uhr sind wir wieder für dich da.</p></main><div class="takeover" data-nr="6" data-plan="rechts,links" data-vorlauf="3" data-links="video/takeover-links.mp4?v=47e89f0b" data-rechts="video/takeover-rechts.mp4?v=9c341155"><video muted playsinline preload="auto"></video></div><div class="angebot" data-nr="6" data-video="video/angebot-jayjay.mp4?v=9db8cc3b"><div class="a-video"><video muted playsinline preload="none"></video></div><div class="a-oben"></div><div class="a-unten"></div><div class="a-rahmen"></div><div class="a-kopf"><img src="logo/tb_brioche.png" alt="Two Bro's"><h2 class="a-titel"></h2></div><div class="a-text"><h3 class="a-gericht"></h3><div class="a-dazu-liste"></div><p class="a-preis"></p></div></div><script>
 (function () {
   var treffer = /[?&]drehen=([^&]*)/.exec(location.search), drehen = treffer ? decodeURIComponent(treffer[1]) : null;
   function einpassen() {
@@ -169,8 +193,9 @@ function zeige() {
   var zeit = q.zeit || (geschlossen(jetzt, tag) ? 'geschlossen'
                         : jetzt < (K.fruehstueck_bis || '12:00') ? 'morgens' : 'mittag');
   window.ZEIT = zeit;
-  // Läuft gerade der Burger über zwei Bildschirme, bleibt das Karten-Video aus (nur ein Video zur Zeit).
-  var takeover = !!document.querySelector('.takeover.an');
+  // Läuft gerade der Burger über zwei Bildschirme oder das Angebot des Monats, bleibt das Karten-Video aus
+  // (nur ein Video zur Zeit).
+  var takeover = !!document.querySelector('.takeover.an, .angebot.an');
   for (var i = 0; i < seiten.length; i++) {
     var m = seiten[i], mz = m.getAttribute('data-zeit'), v = m.querySelector('video');
     var an = zeit === 'geschlossen' ? mz === 'geschlossen' : mz !== 'geschlossen' && (!mz || mz === zeit);
@@ -599,5 +624,101 @@ setInterval(pruefe, 300000);
   // Erst die Videos laden, dann die Uhr abgleichen: So stören die großen Downloads die Laufzeit-Proben nicht.
   if (test) { vorladen(function () { runde(jetzt() + 1200, decodeURIComponent(test[1])); }); return; }
   vorladen(function () { uhrAbgleich(naechster); spaeterAbgleich(); });
+})();
+</script><script>
+(function () {
+  var box = document.querySelector('.angebot');
+  if (!box) return;
+  var K = window.KONFIG || {}, A = K.angebot || {}, nr = box.getAttribute('data-nr');
+  var test = /[?&]angebot=jetzt/.test(location.search);
+  if (/[?&]ebene=1/.test(location.search)) document.documentElement.className += ' ebene';
+  if (!test && !(A.alle > 0 && (A.bildschirme || []).indexOf(nr) >= 0)) return;
+  function text(sel, t) { var e = box.querySelector(sel); if (e && t) e.textContent = t; }
+  text('.a-titel', A.titel);
+  text('.a-gericht', A.gericht);
+  text('.a-preis', A.preis);
+  var liste = box.querySelector('.a-dazu-liste');
+  if (liste && A.dazu && A.dazu.length) {
+    liste.innerHTML = '';
+    for (var i = 0; i < A.dazu.length; i++) {
+      var p = document.createElement('p');
+      p.className = 'a-dazu';
+      p.textContent = '+ ' + A.dazu[i];
+      liste.appendChild(p);
+    }
+  }
+  var v = box.querySelector('video'), url = A.video || box.getAttribute('data-video'), bereit = false, uhr = null, halt = null;
+  var wache = null;
+  var uhrTest = (/[?&]uhr=([0-9:]+)/.exec(location.search) || [])[1];
+  function zwei(n) { return (n < 10 ? '0' : '') + n; }
+  function erlaubt() {
+    if (window.ZEIT === 'geschlossen') return false;
+    var d = new Date(), j = uhrTest || (zwei(d.getHours()) + ':' + zwei(d.getMinutes()));
+    return j >= (A.ab || '00:00') && j < (A.bis || '24:00');
+  }
+  function quelle(src) {
+    if (/ an/.test(box.className)) return;
+    v.setAttribute('preload', 'auto');
+    v.setAttribute('src', src);
+    try { v.load(); } catch (e) {}
+    bereit = true;
+  }
+  function holen() {
+    if (!url) return;
+    if (!window.fetch || !window.URL || !URL.createObjectURL) { quelle(url); return; }
+    fetch(url).then(function (a) { if (!a.ok) throw new Error('HTTP ' + a.status); return a.blob(); })
+      .then(function (b) { quelle(URL.createObjectURL(b)); })
+      ['catch'](function () { if (!bereit) quelle(url); setTimeout(holen, 60000); });
+  }
+  // Reihum (Firas 16.11.2026: „Ja, reihum 1 bis 4“): Mit `reihum: true` zeigt in jedem Takt nur EIN Bildschirm der
+  // Liste das Angebot, der Reihe nach (Takt k gehört zu bildschirme[k % Anzahl]). Ohne `reihum` zeigen es alle
+  // Bildschirme der Liste gleichzeitig. `data-naechstes` am Kasten nennt den nächsten eigenen Termin (zum Prüfen).
+  function naechster() {
+    clearTimeout(uhr);
+    var liste = A.bildschirme || [], i = liste.indexOf(nr), n = liste.length;
+    var alle = A.alle * 1000, vers = (A.versatz || 0) * 1000, t = Date.now();
+    if (!(alle > 0) || i < 0) return;
+    var k = Math.floor((t - vers) / alle) + 1;
+    if (A.reihum) while (((k % n) + n) % n !== i) k++;
+    box.setAttribute('data-naechstes', new Date(k * alle + vers).toString());
+    uhr = setTimeout(zeigen, k * alle + vers - t);
+  }
+  function weiter() {
+    if (typeof zeige === 'function') zeige();
+  }
+  function zeigen(sofort) {
+    if (!bereit || (sofort !== true && !erlaubt())) { naechster(); return; }
+    try { v.currentTime = 0; } catch (e) {}
+    box.className = 'angebot an';
+    weiter();
+    var p = v.play();
+    if (p && p['catch']) p['catch'](function () { ende(); });
+    clearTimeout(halt);
+    // Sicherung, falls „ended“ nie kommt: Ende, wenn das Video 10 s lang nicht weiterläuft (ein langsamer Start
+    // zählt nicht, am 16.11. im Test hing der Browser einmal am Anfang), spätestens nach doppelter Länge plus 30 s.
+    var letzte = -1, still = 0;
+    clearInterval(wache);
+    wache = setInterval(function () {
+      if (v.currentTime !== letzte) { letzte = v.currentTime; still = 0; return; }
+      if (++still >= 10) ende();
+    }, 1000);
+    halt = setTimeout(ende, ((isFinite(v.duration) && v.duration > 0 ? v.duration : 60) * 2 + 30) * 1000);
+  }
+  function ende() {
+    clearInterval(wache);
+    clearTimeout(halt);
+    halt = setTimeout(function () {
+      box.className = 'angebot';
+      setTimeout(function () { v.pause(); weiter(); }, 900);
+      naechster();
+    }, (A.halten === undefined ? 2 : A.halten) * 1000);
+  }
+  v.addEventListener('ended', ende);
+  holen();
+  if (test) {
+    var warten = setInterval(function () { if (bereit) { clearInterval(warten); setTimeout(function () { zeigen(true); }, 1500); } }, 300);
+    return;
+  }
+  naechster();
 })();
 </script></body></html>
