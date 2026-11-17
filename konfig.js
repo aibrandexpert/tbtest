@@ -24,9 +24,11 @@ window.KONFIG = {
   // Angebot also zu ungeraden Minuten), nur von `ab` bis zum Ladenschluss; am Ende `halten` Sekunden Standbild.
   // bildschirme: Nummern der Bildschirme. reihum: true = in jedem Takt nur einer, der Reihe nach (Firas 16.11.2026:
   // „Ja, reihum 1 bis 4“, alle 2 Minuten, jeder Bildschirm also alle 8 Minuten); false = alle gleichzeitig. alle: 0 = aus.
+  // 17.11.2026 nur noch 1 und 2 (Firas: „Sofort nur 1+2“): Auf 3 und 4 kam statt des Videos ein grauer Abspielknopf,
+  // siehe technik.md. Weiter alle 2 Minuten reihum, jeder der beiden also alle 4 Minuten (1 zu Minute 1, 5, 9 …, 2 zu 3, 7, 11 …).
   // Titel, Gericht, Beilagen und Preis stehen nur hier. Preis laut Hasan (WhatsApp 16.11.2026, 16:19).
   angebot: {
-    bildschirme: ["1", "2", "3", "4"], reihum: true, alle: 120, versatz: 60, ab: "12:00", halten: 2,
+    bildschirme: ["1", "2"], reihum: true, alle: 120, versatz: 60, ab: "12:00", halten: 2,
     titel: "Menü des Monats", gericht: "Jay Jay Bowl",
     dazu: ["Sinalco deiner Wahl", "Cookie deiner Wahl"], preis: "15 €"
   }
